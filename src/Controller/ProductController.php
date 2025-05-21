@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Images;
+use App\Entity\Product;
+use App\Form\ImagesForm;
+use App\Form\ProductForm;
 use App\Repository\ProductRepository;
 use App\Repository\ProfileRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -21,4 +27,61 @@ final class ProductController extends AbstractController
             'products'=>$productRepository->findAll(),
         ]);
     }
+
+    #[Route('/products/addImages', name: 'app_product_addImages')]
+    public function addImage(Request $request, EntityManagerInterface $entityManager):Response
+    {
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
+
+        $image =new Images();
+        $imageForm = $this->createForm(ImagesForm::class, $image);
+        $imageForm->handleRequest($request);
+        if($imageForm->isSubmitted() && $imageForm->isValid()) {
+            $entityManager->persist($image);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_product_create', ['id'=>$image->getId()]);
+
+        }
+
+        return $this->render('product/add_image.html.twig', [
+            'imageForm' => $imageForm,
+            'image'=>$image,
+        ]);
+
+
+    }
+
+
+    #[Route('/product/create/{id}', name: 'app_product_create')]
+    public function create(Request $request, EntityManagerInterface $entityManager, Images $images): Response
+    {
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
+
+        $product = new Product();
+        $productForm = $this->createForm(ProductForm::class, $product);
+        $productForm->handleRequest($request);
+        if($productForm->isSubmitted() && $productForm->isValid()) {
+            $product->setCreateAt(new \DateTimeImmutable());
+            $product->addImage($images);
+            $product->setName($productForm->get('name')->getData());
+            $product->setDescription($productForm->get('description')->getData());
+            $product->setPrice($productForm->get('price')->getData());
+            $product->setCategory($productForm->get('category')->getData());
+            $product->setStock($productForm->get('stock')->getData());
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute('app_products');
+        }
+
+        return $this->render('product/create.html.twig', [
+            'productForm' => $productForm,
+            'image'=>$images,
+
+        ]);
+
+
+    }
+
 }

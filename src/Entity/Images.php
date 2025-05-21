@@ -31,7 +31,6 @@ class Images
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
     /**
@@ -90,4 +89,11 @@ class Images
 
         return $this;
     }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+
 }
