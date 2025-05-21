@@ -19,7 +19,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
                 <td>
-                    <a href="">show</a>
+                    <a href="{{ path('app_product_show', {id:product.id}) }}">show</a>
                     <a href="">edit</a>
                 </td>
             </tr>
