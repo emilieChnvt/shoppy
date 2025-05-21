@@ -6,6 +6,7 @@ use App\Entity\Images;
 use App\Entity\Product;
 use App\Form\ImagesForm;
 use App\Form\ProductForm;
+use App\Repository\ImagesRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,10 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin')]
 final class ProductController extends AbstractController
 {
-    #[Route('/products', name: 'app_products')]
+    #[Route('/admin/products', name: 'app_products')]
     public function index(ProductRepository $productRepository): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -28,7 +28,7 @@ final class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/products/addImages', name: 'app_product_addImages')]
+    #[Route('/admin/products/addImages', name: 'app_product_addImages')]
     public function addImage(Request $request, EntityManagerInterface $entityManager):Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -52,7 +52,7 @@ final class ProductController extends AbstractController
     }
 
 
-    #[Route('/product/create/{id}', name: 'app_product_create')]
+    #[Route('/admin/product/create/{id}', name: 'app_product_create')]
     public function create(Request $request, EntityManagerInterface $entityManager, Images $images): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -77,7 +77,7 @@ final class ProductController extends AbstractController
 
         return $this->render('product/create.html.twig', [
             'productForm' => $productForm,
-            'image'=>$images,
+            'images'=>$images,
 
         ]);
 
@@ -89,6 +89,47 @@ final class ProductController extends AbstractController
     {
         return $this->render('product/show.html.twig', [
             'product'=>$product,
+        ]);
+    }
+
+    #[Route('/admin/product/{id}/edit', name: 'app_product_edit')]
+    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager,): Response
+    {
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
+        if(!$product) {return $this->redirectToRoute('app_product_show', ['id'=>$product->getId()]);}
+
+        $productForm = $this->createForm(ProductForm::class, $product);
+        $productForm->handleRequest($request);
+        if($productForm->isSubmitted() && $productForm->isValid()) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_product_show', ['id'=>$product->getId()]);
+        }
+        return $this->render('product/edit.html.twig', [
+            'productForm' => $productForm,
+        ]);
+
+
+    }
+    #[Route('/admin/products/addImages/{id}', name: 'app_product_addImages_post')]
+    public function editImage(Request $request, EntityManagerInterface $entityManager, Product $product):Response
+    {
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $image = new Images();
+        $imageForm = $this->createForm(ImagesForm::class, $image);
+        $imageForm->handleRequest($request);
+        if ($imageForm->isSubmitted() && $imageForm->isValid()) {
+            $image->setProduct($product);
+            $entityManager->persist($image);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_product_show', ['id' => $image->getId()]);
+        }
+
+        return $this->render('product/add_image.html.twig', [
+            'imageForm' => $imageForm,
         ]);
     }
 

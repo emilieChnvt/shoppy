@@ -7,7 +7,9 @@
         <td>{{ product.name }}</td>
         <td>{{ product.price }}</td>
         <td>
-            <a href="">edit</a>
+            <a href="{{ path('app_product_edit', {id:product.id}) }}">edit</a>
+            <a href="{{ path('app_product_addImages_post',{id:product.id} ) }}">vhange image</a>
+
         </td>
     </tr>
 

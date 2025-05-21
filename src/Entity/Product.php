@@ -36,7 +36,7 @@ class Product
     /**
      * @var Collection<int, Images>
      */
-    #[ORM\OneToMany(targetEntity: Images::class, mappedBy: 'images')]
+    #[ORM\OneToMany(targetEntity: Images::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $images;
 
     public function __construct()
@@ -140,8 +140,6 @@ class Product
     }
 
 
-
-
     public function removeImage(Images $image): static
     {
         if ($this->images->removeElement($image)) {
@@ -153,4 +151,6 @@ class Product
 
         return $this;
     }
+
+
 }

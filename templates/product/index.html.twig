@@ -20,7 +20,7 @@
                 <td>{{ product.price }}</td>
                 <td>
                     <a href="{{ path('app_product_show', {id:product.id}) }}">show</a>
-                    <a href="">edit</a>
+                    <a href="{{ path('app_product_edit', {id:product.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
