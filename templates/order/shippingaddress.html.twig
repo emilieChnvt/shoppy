@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <h3>pick a shipping address</h3>
+    {% for address in app.user.profile.addresses %}
+
+        <a href="{{ path('app_order_payment',{idBilling:billingAddress.id, idShipping:address.id}) }}">
+            <div class="flex">
+                <p>{{ address.streetNumber }}</p>
+                <p>{{ address.street }}</p>
+                <p>{{ address.zipcode }}</p>
+                <p>{{ address.country }}</p>
+            </div>
+        </a>
+
+    {% endfor %}
+{% endblock %}
+{% block title %}
+
+{% endblock %}
