@@ -75,4 +75,14 @@ class CartService
         }
         return $total;
     }
+
+    public function getCount():int
+    {
+        $cart = $this->getCart();
+        $count = 0;
+        foreach ($cart as $item) {
+            $count += $item['quantity'];
+        }
+        return $count;
+    }
 }
