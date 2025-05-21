@@ -26,10 +26,8 @@ final class CartController extends AbstractController
     public function add(CartService $cartService, Product $product, int $quantity): Response
     {
         if(!$this->getUser()){return $this->redirectToRoute('app_login');}
-        if(!$product){return $this->redirectToRoute('app_products');}
         $cartService->addToCart($product, $quantity);
         return $this->redirectToRoute('app_cart');
-
 
     }
 
@@ -38,8 +36,7 @@ final class CartController extends AbstractController
     public function removeOneFromCart(CartService $cartService, Product $product, int $quantity): Response
     {
         if(!$this->getUser()){return $this->redirectToRoute('app_login');}
-        if(!$product){return $this->redirectToRoute('app_products');}
-        $cartService->removeFromCart($product, $quantity);
+        $cartService->removeOneUnitFromCart($product, $quantity);
         return $this->redirectToRoute('app_cart');
     }
 
@@ -48,6 +45,15 @@ final class CartController extends AbstractController
     {
         if(!$this->getUser()){return $this->redirectToRoute('app_login');}
         $cartService->emptyCart();
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/removeProduct/{id}', name: 'app_cart_removeoneproductfromcart')]
+    public function removeOneProductFromCart(CartService $cartService, Product $product): Response
+    {
+        if(!$this->getUser()){return $this->redirectToRoute('app_login');}
+        if(!$product){return $this->redirectToRoute('app_products');}
+        $cartService->removeProductFromCart($product);
         return $this->redirectToRoute('app_cart');
     }
 }

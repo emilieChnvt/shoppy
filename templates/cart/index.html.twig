@@ -22,9 +22,20 @@
             <td>{{ item.quantity }}</td>
             <td>{{ item.product.price * item.quantity }}</td>
             <td>
-                <a href="{{ path('app_cart_add',{id:item.product.id, quantity:1}) }}">ajouter</a>
-                <a href="{{ path('app_cart_remove', {id:item.product.id, quantity:1}) }}">enlever</a>
-                <a href="{{ path('app_cart_empty') }}">tous les enlever</a>
+                <div>
+                    <a href="{{ path('app_cart_add',{id:item.product.id, quantity:1}) }}">ajouter</a>
+
+                </div>
+                <div>
+                    <a href="{{ path('app_cart_remove', {id:item.product.id, quantity:1}) }}">enlever</a>
+
+                </div>
+                <div>
+                    <a href="{{ path('app_cart_removeoneproductfromcart', {id:item.product.id}) }}">enlever produit</a>
+
+                </div>
+
+
             </td>
         </tr>
 
