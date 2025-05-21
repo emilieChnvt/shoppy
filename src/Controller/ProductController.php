@@ -133,4 +133,20 @@ final class ProductController extends AbstractController
         ]);
     }
 
+
+    #[Route('/admin/product/delete/{id}', name: 'app_product_delete')]
+    public function delete( Product $product, EntityManagerInterface $entityManager): Response
+    {
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            return $this->redirectToRoute('app_login');
+        }
+        if($product) {
+            $entityManager->remove($product);
+            $entityManager->flush();
+
+        }
+
+
+        return $this->redirectToRoute('app_products');
+    }
 }
