@@ -33,6 +33,10 @@ class Profile
     #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'profile', orphanRemoval: true)]
     private Collection $addresses;
 
+    #[ORM\OneToOne(inversedBy: 'profile', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $ofUser = null;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -117,6 +121,18 @@ class Profile
                 $address->setProfile(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOfUser(): ?User
+    {
+        return $this->ofUser;
+    }
+
+    public function setOfUser(User $ofUser): static
+    {
+        $this->ofUser = $ofUser;
 
         return $this;
     }

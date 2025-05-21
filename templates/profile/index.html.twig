@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+<h2>Profile</h2>
+
+    {% if app.user %}
+        <p>Nom: {{ profile.name }}</p>
+        <p>Prénom: {{ profile.firstName }}</p>
+        <p>Téléphone: {{ profile.phone }}</p>
+        {% for address in profile.addresses %}
+            <div class="flex"><p>{{ address.streetNumber }}</p>, <p>{{ address.street }}</p></div>
+            <div class="flex"><p>{{ address.zipcode }}</p>, <p>{{ address.country }}</p></div>
+        {% endfor %}
+        <a href="{{ path('app_profile_edit', {id:profile.id}) }}" class="border">edit your profile</a>
+        <a href="{{ path('app_address_new', {id:profile.id}) }}" class="border"> ajoute des addresses</a>
+
+
+    {% endif %}
+{% endblock %}
