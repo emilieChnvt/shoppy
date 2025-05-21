@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FeedbackRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FeedbackRepository::class)]
@@ -30,8 +32,18 @@ class Feedback
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $feedbackRating = null;
+    /**
+     * @var Collection<int, FeedBackRating>
+     */
+    #[ORM\OneToMany(targetEntity: FeedBackRating::class,mappedBy: 'feedback', cascade: ['remove'], orphanRemoval: true )]
+    private Collection $feedBackRatings;
+
+    public function __construct()
+    {
+        $this->feedBackRatings = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -98,15 +110,52 @@ class Feedback
         return $this;
     }
 
-    public function getFeedbackRating(): ?float
+    /**
+     * @return Collection<int, FeedBackRating>
+     */
+    public function getFeedBackRatings(): Collection
     {
-        return $this->feedbackRating;
+        return $this->feedBackRatings;
     }
 
-    public function setFeedbackRating(?float $feedbackRating): static
+    public function addFeedBackRating(FeedBackRating $feedBackRating): static
     {
-        $this->feedbackRating = $feedbackRating;
+        if (!$this->feedBackRatings->contains($feedBackRating)) {
+            $this->feedBackRatings->add($feedBackRating);
+            $feedBackRating->setFeedback($this);
+        }
 
         return $this;
     }
+
+    public function removeFeedBackRating(FeedBackRating $feedBackRating): static
+    {
+        if ($this->feedBackRatings->removeElement($feedBackRating)) {
+            // set the owning side to null (unless already changed)
+            if ($feedBackRating->getFeedback() === $this) {
+                $feedBackRating->setFeedback(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function getAverageRelevance(Feedback $feedback): ?float
+    {
+
+        $total = 0;
+        $count = 0;
+
+        foreach ($this->getFeedBackRatings() as $rate) {
+            if ($rate->getRate() !== null) {
+                $total += $rate->getRate();
+                $count++;
+            }
+        }
+
+       return  $count > 0 ? $total / $count : null;    }
+
+
+
 }

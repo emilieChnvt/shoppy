@@ -43,10 +43,17 @@ class Profile
     #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'author')]
     private Collection $feedback;
 
+    /**
+     * @var Collection<int, FeedBackRating>
+     */
+    #[ORM\OneToMany(targetEntity: FeedBackRating::class, mappedBy: 'author')]
+    private Collection $feedBackRatings;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
         $this->feedback = new ArrayCollection();
+        $this->feedBackRatings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,6 +175,36 @@ class Profile
             // set the owning side to null (unless already changed)
             if ($feedback->getAuthor() === $this) {
                 $feedback->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FeedBackRating>
+     */
+    public function getFeedBackRatings(): Collection
+    {
+        return $this->feedBackRatings;
+    }
+
+    public function addFeedBackRating(FeedBackRating $feedBackRating): static
+    {
+        if (!$this->feedBackRatings->contains($feedBackRating)) {
+            $this->feedBackRatings->add($feedBackRating);
+            $feedBackRating->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedBackRating(FeedBackRating $feedBackRating): static
+    {
+        if ($this->feedBackRatings->removeElement($feedBackRating)) {
+            // set the owning side to null (unless already changed)
+            if ($feedBackRating->getAuthor() === $this) {
+                $feedBackRating->setAuthor(null);
             }
         }
 

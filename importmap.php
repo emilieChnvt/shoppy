@@ -35,4 +35,14 @@ return [
         'version' => '4.1.7',
         'type' => 'css',
     ],
+    'bootstrap' => [
+        'version' => '5.3.6',
+    ],
+    '@popperjs/core' => [
+        'version' => '2.11.8',
+    ],
+    'bootstrap/dist/css/bootstrap.min.css' => [
+        'version' => '5.3.6',
+        'type' => 'css',
+    ],
 ];

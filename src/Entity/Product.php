@@ -190,4 +190,22 @@ class Product
     }
 
 
+    public function getAverageProductRating(Product $product): ?float
+    {
+        $feedbacks = $product->getFeedback();
+
+        $total = 0;
+        $count = 0;
+
+        foreach ($feedbacks as $feedback) {
+            $rating = $feedback->getProductRating();
+            if ($rating !== null) {
+                $total += $rating;
+                $count++;
+            }
+        }
+
+        return $count > 0 ? $total / $count : null;    }
+
+
 }

@@ -6,7 +6,8 @@ import './bootstrap.js';
  * which should already be in your base.html.twig.
  */
 
-import 'tailwindcss'
+import 'tailwindcss/index.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/app.css';
 
 

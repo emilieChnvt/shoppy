@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>donne ton retour sur l'avis de {{ feedback.author.firstName }}</h1>
+
+    {{ form_start(form) }}
+
+    <label>Note :</label>
+    <div class="rating">
+        {{ form_widget(form) }}
+    </div>
+
+    <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

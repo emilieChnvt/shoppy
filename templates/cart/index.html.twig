@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!{% endblock %}
+
+{% block body %}
+<table>
+    <thead>
+    <tr>
+        <td>product name</td>
+        <td>unit price</td>
+        <td>quantity</td>
+        <td>subtotal</td>
+        <td>actions</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart %}
+
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.product.price * item.quantity }}</td>
+            <td>
+                <a href="{{ path('app_cart_add',{id:item.product.id, quantity:1}) }}">ajouter</a>
+                <a href="{{ path('app_cart_remove', {id:item.product.id, quantity:1}) }}">enlever</a>
+                <a href="">tous les enlever</a>
+            </td>
+        </tr>
+
+
+    {% endfor %}
+
+
+{% endblock %}
