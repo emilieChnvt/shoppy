@@ -10,8 +10,12 @@
         <p>Prénom: {{ profile.firstName }}</p>
         <p>Téléphone: {{ profile.phone }}</p>
         {% for address in profile.addresses %}
-            <div class="flex"><p>{{ address.streetNumber }}</p>, <p>{{ address.street }}</p></div>
-            <div class="flex"><p>{{ address.zipcode }}</p>, <p>{{ address.country }}</p></div>
+            <div class="flex flex-col">
+                <div class="flex"><p>{{ address.streetNumber }}</p>, <p>{{ address.street }}</p></div>
+                <div class="flex"><p>{{ address.zipcode }}</p>, <p>{{ address.country }}</p></div>
+
+                <a href="{{ path('app_address_delete', {id:address.id}) }}" class="btn btn-yellow">supp</a>
+            </div>
         {% endfor %}
         <a href="{{ path('app_profile_edit', {id:profile.id}) }}" class="border">edit your profile</a>
         <a href="{{ path('app_address_new', {id:profile.id}) }}" class="border"> ajoute des addresses</a>
