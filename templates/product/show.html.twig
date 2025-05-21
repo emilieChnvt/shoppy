@@ -3,9 +3,9 @@
 {% block body %}
 
     <tr>
-        <td>{{ product.id }}</td>
-        <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
+        <td>name: {{ product.name }}</td>
+        <td>price : {{ product.price }}</td>
+        <td>stock : {{ product.stock }}</td>
         <td>
             <a href="{{ path('app_product_edit', {id:product.id}) }}">edit</a>
             <a href="{{ path('app_product_delete', {id:product.id}) }}">delete</a>
@@ -15,25 +15,36 @@
     </tr>
 
     <div class="">
-        <h1>Feedback</h1>
+        <span><h1>Feedback</h1> {{ product.getAverageProductRating(product) }}/5 est la note moyenne pour ce produit </span>
+        <div>
+            <a href="{{ path('app_feedback_create', {id:product.id}) }}" class="btn btn-blue">give a feddback</a>
+
+        </div>
         <div>
             {% for feedback in product.feedback %}
-                <div class="flex flex-col bg-black border">
+                <div class="flex flex-col border ">
                     <div class="flex">
                         <p>name :{{ feedback.author.name }}</p>
                         <p>firstname{{ feedback.author.firstName }}</p>
                     </div>
-                    <p>content :{{ feedback.content }}</p>
+                    {% if feedback.content %}
+                        <p>content :{{ feedback.content }}</p>
+                        <a href="{{ path('app_feedback_rating', {id:feedback.id}) }}">utuilité de cette avis</a>
+                    {% endif     %}
                     <p>content :{{ feedback.productRating }}</p>
                     <p>{{ feedback.createAt|date('d/m/Y H:i') }}</p>
-                    <p>pertinence de l'avis {{ feedback.feedbackrating }}</p>
-                </div>
-                <a href="{{ path('app_feedback_create', {id:product.id}) }}" class="btn btn-blue">give a feddback</a>
+                    <p class="btn btn-success">{{ feedback.productRating }}/5</p>
+                                   </div>
                 {% if app.user.profile == feedback.author %}
                     <a href="{{ path('app_feedback_edit', {id:feedback.id}) }}" class="btn btn-blue">edit a feddback</a>
+                    <a href="{{ path('app_feedback_delete', {id:feedback.id}) }}" class="btn btn-blue">delete your feddback</a>
 
                 {% endif %}
+                <div>
+                    <span>utilité de l'avis {{ feedback.getAverageRelevance(feedback) }}</span>
+                </div>
             {% endfor %}
+
         </div>
 
     </div>

@@ -50,7 +50,7 @@ final class FeedbackController extends AbstractController
     #[Route('/feedback/{id}/edit', name: 'app_feedback_edit')]
     public function edit(Feedback $feedback, EntityManagerInterface $manager, Request $request): Response
     {
-        if ($this->getUser()->getProfile()->getId() !== $feedback->getAuthor()->getId()) {
+        if (!$this->getUser() || $this->getUser()->getProfile()->getId() !== $feedback->getAuthor()->getId()) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -69,4 +69,21 @@ final class FeedbackController extends AbstractController
             'feedbackForm' => $feedbackForm
         ]);
     }
+
+    #[Route('/feedback/{id}/delete', name: 'app_feedback_delete')]
+    public function delete(Feedback $feedback, EntityManagerInterface $manager): \Symfony\Component\HttpFoundation\RedirectResponse
+    {
+        if (!$this->getUser() || $this->getUser()->getProfile()->getId() !== $feedback->getAuthor()->getId()) {
+            return $this->redirectToRoute('app_login');
+        }
+        if($feedback){
+            $manager->remove($feedback);
+            $manager->flush();
+        }
+
+        return $this->redirectToRoute('app_product_show', ['id' => $feedback->getProduct()->getId()]);
+
+
+    }
 }
+//pas besoins de show
