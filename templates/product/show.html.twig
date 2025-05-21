@@ -14,6 +14,26 @@
         </td>
     </tr>
 
+    <div class="">
+        <h1>Feedback</h1>
+        <div>
+            {% for feedback in product.feedback %}
+                <div class="flex flex-col bg-black border">
+                    <div class="flex">
+                        <p>name :{{ feedback.author.name }}</p>
+                        <p>firstname{{ feedback.author.firstName }}</p>
+                    </div>
+                    <p>content :{{ feedback.content }}</p>
+                    <p>content :{{ feedback.productRating }}</p>
+                    <p>{{ feedback.createAt|date('d/m/Y H:i') }}</p>
+                    <p>pertinence de l'avis {{ feedback.feedbackrating }}</p>
+                </div>
+                <a href="{{ path('app_feedback_create', {id:product.id}) }}" class="btn btn-blue">give a feddback</a>
+            {% endfor %}
+        </div>
+
+    </div>
+
 {% endblock %}
 
 {% block title %}

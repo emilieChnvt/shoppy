@@ -7,7 +7,6 @@ import './bootstrap.js';
  */
 
 import 'tailwindcss'
-
 import './styles/app.css';
 
 
