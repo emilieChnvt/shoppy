@@ -66,4 +66,13 @@ class CartService
     public function emptyCart(){
         $this->requestStack->getSession()->remove("cart");
     }
+    public function getTotalPrice():float
+    {
+        $cart = $this->getCart();
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['quantity'] * $item['product']->getPrice();
+        }
+        return $total;
+    }
 }
