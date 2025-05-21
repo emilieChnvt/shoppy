@@ -24,7 +24,7 @@
             <td>
                 <a href="{{ path('app_cart_add',{id:item.product.id, quantity:1}) }}">ajouter</a>
                 <a href="{{ path('app_cart_remove', {id:item.product.id, quantity:1}) }}">enlever</a>
-                <a href="">tous les enlever</a>
+                <a href="{{ path('app_cart_empty') }}">tous les enlever</a>
             </td>
         </tr>
 

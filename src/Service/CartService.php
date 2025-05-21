@@ -62,4 +62,8 @@ class CartService
         }
         $this->requestStack->getSession()->set('cart', $cart); // $cart set
     }
+
+    public function emptyCart(){
+        $this->requestStack->getSession()->remove("cart");
+    }
 }

@@ -40,4 +40,12 @@ final class CartController extends AbstractController
         $cartService->removeFromCart($product, $quantity);
         return $this->redirectToRoute('app_cart');
     }
+
+    #[Route('/cart/empty', name: 'app_cart_empty')]
+    public function removeAllFromCart(CartService $cartService): Response
+    {
+        if(!$this->getUser()){return $this->redirectToRoute('app_login');}
+        $cartService->emptyCart();
+        return $this->redirectToRoute('app_cart');
+    }
 }
