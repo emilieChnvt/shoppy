@@ -45,4 +45,28 @@ final class FeedbackController extends AbstractController
         ]);
 
     }
+
+
+    #[Route('/feedback/{id}/edit', name: 'app_feedback_edit')]
+    public function edit(Feedback $feedback, EntityManagerInterface $manager, Request $request): Response
+    {
+        if ($this->getUser()->getProfile()->getId() !== $feedback->getAuthor()->getId()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if(!$feedback){return $this->redirectToRoute('app_product_show', ['id' => $feedback->getProduct()->getId()]);}
+
+        $feedbackForm = $this->createForm(FeedbackForm::class , $feedback);
+        $feedbackForm->handleRequest($request);
+        if($feedbackForm->isSubmitted() && $feedbackForm->isValid()){
+            $manager->persist($feedback);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_product_show', ['id' => $feedback->getProduct()->getId()]);
+        }
+
+        return $this->render('feedback/edit.html.twig', [
+            'feedbackForm' => $feedbackForm
+        ]);
+    }
 }

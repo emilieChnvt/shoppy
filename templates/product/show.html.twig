@@ -29,6 +29,10 @@
                     <p>pertinence de l'avis {{ feedback.feedbackrating }}</p>
                 </div>
                 <a href="{{ path('app_feedback_create', {id:product.id}) }}" class="btn btn-blue">give a feddback</a>
+                {% if app.user.profile == feedback.author %}
+                    <a href="{{ path('app_feedback_edit', {id:feedback.id}) }}" class="btn btn-blue">edit a feddback</a>
+
+                {% endif %}
             {% endfor %}
         </div>
 

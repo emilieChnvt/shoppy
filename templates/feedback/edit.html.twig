@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2>edit your feedback</h2>
+
+    {{ form_start(feedbackForm) }}
+    {{ form_row(feedbackForm.content) }}
+
+    <label>Note :</label>
+    <div class="rating">
+        {{ form_widget(feedbackForm.productRating) }}
+    </div>
+
+    <button type="submit">edit feedback</button>
+    {{ form_end(feedbackForm) }}
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
