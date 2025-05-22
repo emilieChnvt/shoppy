@@ -1,62 +1,54 @@
-
 {% extends 'base.html.twig' %}
 
+{% block title %}Paiement{% endblock %}
+
 {% block body %}
+    <h1>Procéder au paiement</h1>
 
-
-    <h3>recap</h3>
-    <table>
+    <h2>Résumé de votre commande</h2>
+    <table border="1" cellpadding="10">
         <thead>
         <tr>
-            <td>product name</td>
-            <td>unit price</td>
-            <td>quantity</td>
-            <td>subtotal</td>
-            <td></td>
+            <th>Produit</th>
+            <th>Prix unitaire</th>
+            <th>Quantité</th>
+            <th>Sous-total</th>
         </tr>
         </thead>
         <tbody>
         {% for item in cart %}
-
             <tr>
                 <td>{{ item.product.name }}</td>
-                <td>{{ item.product.price }}</td>
+                <td>{{ item.product.price / 100 }} €</td>
                 <td>{{ item.quantity }}</td>
-                <td>{{ item.product.price * item.quantity }}</td>
-
+                <td>{{ (item.product.price * item.quantity) / 100 }} €</td>
             </tr>
-
-
         {% endfor %}
-
         <tr>
-            <td></td>
-            <td></td>
-            <td>Grand Total</td>
-            <td><strong>{{ total }} €</strong></td>
+            <td colspan="3"><strong>Total</strong></td>
+            <td><strong>{{ total / 100 }} €</strong></td>
         </tr>
-
         </tbody>
     </table>
-    <h4>Billing address</h4>
-    <div class="flex">
-        <p>{{ billing.streetNumber }}</p>
-        <p>{{ billing.street }}</p>
-        <p>{{ billing.zipcode }}</p>
-        <p>{{ billing.country }}</p>
-    </div>
 
-    <h4>Shipping address</h4>
-    <div class="flex">
-        <p>{{ shipping.streetNumber }}</p>
-        <p>{{ shipping.street }}</p>
-        <p>{{ shipping.zipcode }}</p>
-        <p>{{ shipping.country }}</p>
-    </div>
+    <br>
+    <button id="checkout-button">Payer</button>
 
-    <h2>Happy with all that ?</h2>
-    <a href="{{ path('app_order_validate', {idBilling:billing.id, idShipping:shipping.id}) }}">Pay and order</a>
-{% endblock %}
-{% block title %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stripe = Stripe('{{ stripe_public_key }}');
 
+            document.getElementById('checkout-button').addEventListener('click', function () {
+                fetch('{{ path('stripe_checkout') }}', {
+                    method: 'POST',
+                })
+                    .then(response => response.json())
+                    .then(session => {
+                        return stripe.redirectToCheckout({ sessionId: session.id });
+                    })
+                    .catch(error => console.error('Erreur:', error));
+            });
+        });
+    </script>
 {% endblock %}

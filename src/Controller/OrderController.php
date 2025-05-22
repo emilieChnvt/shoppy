@@ -42,8 +42,8 @@ final class OrderController extends AbstractController
             'cart' => $cartService->getCart(),
             'total'=>$cartService->getTotalPrice(),
             'billing' => $billing,
-            'shipping' => $shipping
-        ]);
+            'shipping' => $shipping,
+            'stripe_public_key' => $_ENV['STRIPE_PUBLIC_KEY'],        ]);
     }
 
 
