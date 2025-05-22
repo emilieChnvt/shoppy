@@ -31,7 +31,7 @@ final class OrderController extends AbstractController
     }
 
 
-    #[Route('/order/payment/{idBilling}/{idShipping}', name: 'app_order_payment')]
+    #[Route('/order/payment/{idBilling}/{idShipping}', name: 'app_order_payment')] //recap commande + payer
     public function payment(CartService $cartService,AddressRepository $addressRepository, $idBilling, $idShipping): Response
     {
         $billing = $addressRepository->find($idBilling);
@@ -46,6 +46,8 @@ final class OrderController extends AbstractController
             'stripe_public_key' => $_ENV['STRIPE_PUBLIC_KEY'],      ]);
     }
 
+
+    // user paye puis redirigé vers validate
 
     #[Route('/order/validate/{idBilling}/{idShipping}', name: 'app_order_validate')]
 
@@ -69,6 +71,13 @@ final class OrderController extends AbstractController
             $orderItem->setProduct($cartItem['product']);
             $orderItem->setQuantity($cartItem['quantity']);
             $manager->persist($orderItem);
+
+
+            //new stock after an order
+            $product = $cartItem['product'];
+            $newtStock = $product->getStock() - $cartItem['quantity'];
+            $product->setStock($newtStock);
+            $manager->persist($product);
         }
         $manager->flush();
         $cartService->emptyCart();

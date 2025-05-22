@@ -17,7 +17,7 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $status = null;
+    private ?int $status = null; // 1 = validé 2 en cours de livraison 3 livré
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
