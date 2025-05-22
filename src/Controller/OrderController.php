@@ -43,7 +43,7 @@ final class OrderController extends AbstractController
             'total'=>$cartService->getTotalPrice(),
             'billing' => $billing,
             'shipping' => $shipping,
-            'stripe_public_key' => $_ENV['STRIPE_PUBLIC_KEY'],        ]);
+            'stripe_public_key' => $_ENV['STRIPE_PUBLIC_KEY'],      ]);
     }
 
 
@@ -72,7 +72,7 @@ final class OrderController extends AbstractController
         }
         $manager->flush();
         $cartService->emptyCart();
-        return $this->redirectToRoute('app_my_orders');
+        return $this->redirectToRoute('app_cart');
 
 
     }

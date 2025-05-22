@@ -6,30 +6,52 @@
     <h1>Procéder au paiement</h1>
 
     <h2>Résumé de votre commande</h2>
-    <table border="1" cellpadding="10">
-        <thead>
+<table>
+    <thead>
+    <tr>
+        <td>product name</td>
+        <td>unit price</td>
+        <td>quantity</td>
+        <td>subtotal</td>
+        <td>actions</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart %}
+
         <tr>
-            <th>Produit</th>
-            <th>Prix unitaire</th>
-            <th>Quantité</th>
-            <th>Sous-total</th>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.product.price * item.quantity }}</td>
+            <td>
+                <div>
+                    <a href="{{ path('app_cart_add',{id:item.product.id, quantity:1}) }}">ajouter</a>
+
+                </div>
+                <div>
+                    <a href="{{ path('app_cart_remove', {id:item.product.id, quantity:1}) }}">enlever</a>
+
+                </div>
+                <div>
+                    <a href="{{ path('app_cart_removeoneproductfromcart', {id:item.product.id}) }}">enlever produit</a>
+
+                </div>
+
+
+            </td>
         </tr>
-        </thead>
-        <tbody>
-        {% for item in cart %}
-            <tr>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.product.price / 100 }} €</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ (item.product.price * item.quantity) / 100 }} €</td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <td colspan="3"><strong>Total</strong></td>
-            <td><strong>{{ total / 100 }} €</strong></td>
-        </tr>
-        </tbody>
-    </table>
+
+
+    {% endfor %}
+
+    <tr>
+        <td><a href="">empty all</a></td>
+        <td></td>
+        <td>Grand Total</td>
+        <td><strong>{{ total }} €</strong></td>
+    </tr>
+    </tbody></table>
 
     <br>
     <button id="checkout-button">Payer</button>
@@ -40,9 +62,11 @@
             const stripe = Stripe('{{ stripe_public_key }}');
 
             document.getElementById('checkout-button').addEventListener('click', function () {
-                fetch('{{ path('stripe_checkout') }}', {
-                    method: 'POST',
-                })
+
+                fetch('{{ path('stripe_checkout', {
+                    idBilling: billing.id,
+                    idShipping: shipping.id
+                }) }}')
                     .then(response => response.json())
                     .then(session => {
                         return stripe.redirectToCheckout({ sessionId: session.id });
