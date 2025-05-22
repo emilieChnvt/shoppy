@@ -1,5 +1,7 @@
 import './bootstrap.js';
 import 'bootstrap';
+//import 'tailwind'
+//import 'tailwindcss'
 /*
  * Welcome to your app's main JavaScript file!
  *

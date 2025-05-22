@@ -4,22 +4,35 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryForm;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin')]
+
 final class CategoryController extends AbstractController
 {
-    #[Route('/category', name: 'app_category')]
-    public function index(): Response
+    public function index(CategoryRepository $repo): Response
     {
-        return $this->render('category/index.html.twig', [
-            'controller_name' => 'CategoryController',
+        $categories = $repo->findAll();
+
+        return $this->render('product/index.html.twig', [
+            'categories' => $categories,
         ]);
     }
+
+    #[Route('/category/{id}', name: 'app_category_show')]
+    public function showCategory(Category $category, CategoryRepository $categoryRepository): Response
+    {
+        return $this->render('product/index.html.twig', [
+            'category' => $category,
+            'products' => $category->getProduct(),
+            'categories'=> $categoryRepository->findAll(),
+        ]);
+    }
+
 
     #[Route('/category/create', name: 'app_category_create')]
     public function create(Request $request, EntityManagerInterface $manager): Response
@@ -40,4 +53,8 @@ final class CategoryController extends AbstractController
             'categoryForm' => $categoryForm->createView(),
         ]);
     }
+
+
+
+
 }

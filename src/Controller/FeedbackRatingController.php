@@ -21,8 +21,7 @@ final class FeedbackRatingController extends AbstractController
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
-
-        if($this->getUser()->getProfile() ===  $feedback->getAuthor()->getId()){
+        if($this->getUser()->getProfile()->getId() ===  $feedback->getAuthor()->getId()){
             return $this->redirectToRoute('app_product_show',['id' => $feedback->getProduct()->getId()]);
         }
 

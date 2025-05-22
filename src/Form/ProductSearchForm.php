@@ -14,6 +14,7 @@ class ProductSearchForm extends AbstractType
     {
         $builder
             ->add('product', ProductAutocompleteField::class,[
+                'label'=>false,
                 'autocomplete'=> true,
                 'mapped' => false,
             ])

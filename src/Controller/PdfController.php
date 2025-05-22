@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Service\CartService;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Knp\Snappy\Pdf;
@@ -21,6 +22,7 @@ class PdfController extends AbstractController
     #[Route('/pdf/{id}', name: 'generate_pdf')]
     public function generatePdf(Order $order): Response
     {
+        if($this->getUser()->getProfile() !== $order->getCustomer() ) { return $this->redirectToRoute('app_login'); }
         $html = $this->renderView('pdf/template.html.twig', [
             'title' => 'Mon super PDF',
             'order'=>$order,
@@ -29,9 +31,6 @@ class PdfController extends AbstractController
 
         $pdfOutput = $this->pdf->getOutputFromHtml($html);
 
-        return new Response($pdfOutput, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="fichier.pdf"',
-        ]);
+        return new PdfResponse($pdfOutput, "mon-super-pdf.pdf");
     }
 }
