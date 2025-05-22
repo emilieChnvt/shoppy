@@ -21,6 +21,11 @@
         {% endfor %}
     {% endif %}
 
+    {{ form_start(form) }}
+    {{ form_row(form) }}
+    <button type="submit">next</button>
+    {{ form_end(form) }}
+
 
 {% endblock %}
 

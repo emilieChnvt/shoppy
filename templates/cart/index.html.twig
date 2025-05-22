@@ -16,21 +16,21 @@
     <tbody>
     {% for item in cart %}
 
-        <tr>
+        <tr class="border">
             <td>{{ item.product.name }}</td>
             <td>{{ item.product.price }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.product.price * item.quantity }}</td>
             <td>
-                <div>
+                <div class="border">
                     <a href="{{ path('app_cart_add',{id:item.product.id, quantity:1}) }}">ajouter</a>
 
                 </div>
-                <div>
+                <div class="border">
                     <a href="{{ path('app_cart_remove', {id:item.product.id, quantity:1}) }}">enlever</a>
 
                 </div>
-                <div>
+                <div class="border">
                     <a href="{{ path('app_cart_removeoneproductfromcart', {id:item.product.id}) }}">enlever produit</a>
 
                 </div>

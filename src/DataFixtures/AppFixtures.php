@@ -16,8 +16,8 @@ class AppFixtures extends Fixture
             $product->setName($faker->word());
             $product->setDescription($faker->text());
             $product->setPrice($faker->randomFloat(2, 10, 100));
-            $product->setCategory($faker->randomElement([]));
-            $product->setCreateAt(new \DateTime($faker->dateTime()));
+          //  $product->setCategory($faker->randomElement([]));
+            $product->setCreateAt(new \DateTimeImmutable());
             $product->setStock($faker->numberBetween(1, 1000));
             $manager->persist($product);
 

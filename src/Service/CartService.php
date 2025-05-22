@@ -32,11 +32,13 @@ class CartService
 
     public function addToCart(Product $product, int $quantity):void
     {
+        if(!$product){dd('PAS TROUVE');}
         $cart = $this->requestStack->getSession()->get('cart', []); // récupération de cart
+       //dd($cart);
         $productId = $product->getId();
         //modification de cart
         if(isset($cart[$productId])){               //modification de cart
-            $cart[$productId] += $quantity;         //modification de cart
+            $cart[$productId] = $cart[$productId]+$quantity;         //modification de cart
         }else{
             $cart[$productId] = $quantity;          //modification de cart
 
@@ -45,16 +47,16 @@ class CartService
     }
 
 
-    public function removeOneUnitFromCart(Product $product, int $quantity = 1): void
+    public function removeOneUnitFromCart(Product $product): void
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
         $productId = $product->getId();
 
 
         if (isset($cart[$productId])) {
-            $cart[$productId] -= $quantity;
+            $cart[$productId]--;
 
-            if ($cart[$productId] <= 0) {
+            if ($cart[$productId] === 0) {
                 unset($cart[$productId]);
             }
         }
@@ -79,6 +81,7 @@ class CartService
     {
         $cart = $this->getCart();
         $total = 0;
+        //dd($cart);
         foreach ($cart as $item) {
             $total += $item['quantity'] * $item['product']->getPrice();
         }
@@ -87,11 +90,14 @@ class CartService
 
     public function getCount():int
     {
-        $cart = $this->getCart();
+
+        $cart = $this->requestStack->getSession()->get("cart", []);
         $count = 0;
-        foreach ($cart as $item) {
-            $count += $item['quantity'];
+
+        foreach ($cart as $quantity) {
+            $count += $quantity;
         }
+
         return $count;
     }
 }
