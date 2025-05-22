@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EmployeeController!{% endblock %}
+
+{% block body %}
+    <h1>Commandes</h1>
+
+    {% if orders is empty %}
+        <p>Pas de commandes.</p>
+    {% else %}
+        <ul>
+            {% for order in orders %}
+                <a href="">Commande #{{ order.id }} - Date : {{ order.createAt|date('d/m/Y') }} - Status : {{ order.status}} - Total : {{ order.total }} €</a>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
