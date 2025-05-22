@@ -45,4 +45,27 @@ return [
         'version' => '5.3.6',
         'type' => 'css',
     ],
+    'chart.js' => [
+        'version' => '4.4.9',
+    ],
+    'tom-select' => [
+        'version' => '2.4.3',
+    ],
+    '@orchidjs/sifter' => [
+        'version' => '1.1.0',
+    ],
+    '@orchidjs/unicode-variants' => [
+        'version' => '1.1.2',
+    ],
+    'tom-select/dist/css/tom-select.default.min.css' => [
+        'version' => '2.4.3',
+        'type' => 'css',
+    ],
+    '@kurkle/color' => [
+        'version' => '0.3.4',
+    ],
+    'tom-select/dist/css/tom-select.default.css' => [
+        'version' => '2.4.3',
+        'type' => 'css',
+    ],
 ];

@@ -13,9 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+
+#[Route('/admin')]
 final class AdminController extends AbstractController
 {
-    #[Route('/admin/products', name: 'app_products')]
+    #[Route('/products', name: 'app_products')]
     public function index(ProductRepository $productRepository): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -26,7 +28,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/products/addImages', name: 'app_product_addImages')]
+    #[Route('/products/addImages', name: 'app_product_addImages')]
     public function addImage(Request $request, EntityManagerInterface $entityManager):Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -50,7 +52,7 @@ final class AdminController extends AbstractController
     }
 
 
-    #[Route('/admin/product/create/{id}', name: 'app_product_create')]
+    #[Route('/product/create/{id}', name: 'app_product_create')]
     public function create(Request $request, EntityManagerInterface $entityManager, Images $images): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -77,7 +79,7 @@ final class AdminController extends AbstractController
 
     }
 
-    #[Route('/admin/product/{id}/edit', name: 'app_product_edit')]
+    #[Route('/product/{id}/edit', name: 'app_product_edit')]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager,): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -96,7 +98,7 @@ final class AdminController extends AbstractController
 
 
     }
-    #[Route('/admin/products/addImages/{id}', name: 'app_product_addImages_product')]
+    #[Route('/products/addImages/{id}', name: 'app_product_addImages_product')]
     public function editImage(Request $request, EntityManagerInterface $entityManager, Product $product):Response
     {
         if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
@@ -118,7 +120,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/product/delete/{id}', name: 'app_product_delete')]
+    #[Route('/product/delete/{id}', name: 'app_product_delete')]
     public function delete( Product $product, EntityManagerInterface $entityManager): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {

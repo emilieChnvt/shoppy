@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('app_employee') }}">return</a>
+    {% if order.status == 2 %}
+        <h2>commande faite</h2>
+    {% endif %}
+    <table>
+        <thead>
+        <tr>
+            <td>name</td>
+            <td>quantity</td>
+            <td>price</td>
+            <td>total</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="border">
+            {% for item in order.orderItems %}
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.product.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.product.price * item.quantity }}</td>
+
+                <td>Status :
+                    {%if order.status == 1 %}
+                        <p class="bg-secondary">commandé</p>
+                    {% elseif order.status == 2 %}
+                        <p class="bg-primary">en cours de livraison</p>
+                        {% else %}
+                            <p class="bg-sucess">en cours de livraison</p>
+                    {% endif %}
+ </td>
+
+            {% endfor %}
+
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong> Total - {{ order.total }} €</strong></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_employee_status',{ id:order.id}) }}">colis fermé</a>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

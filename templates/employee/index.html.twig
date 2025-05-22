@@ -8,9 +8,21 @@
     {% if orders is empty %}
         <p>Pas de commandes.</p>
     {% else %}
-        <ul>
+        <ul class="flex flex-col">
             {% for order in orders %}
-                <a href="">Commande #{{ order.id }} - Date : {{ order.createAt|date('d/m/Y') }} - Status : {{ order.status}} - Total : {{ order.total }} €</a>
+                <div class="border">
+                    <a href="{{ path('app_employee_show', {id:order.id}) }}">Commande #{{ order.id }} - From : {{ order.customer.name}} - Date : {{ order.createAt|date('d/m/Y') }} - Status : {{ order.status}} - Total : {{ order.total }} €  - </a>
+                    <a href="{{ path('generate_pdf', {id:order.id}) }}">PDF</a>
+
+                        {%if order.status == 1 %}
+                            <p class="bg-secondary">commandé</p>
+                        {% elseif order.status == 2 %}
+                            <p class="bg-primary">en cours de livraison</p>
+                        {% else %}
+                            <p class="bg-sucess">en cours de livraison</p>
+                        {% endif %}
+
+                </div>
             {% endfor %}
         </ul>
     {% endif %}

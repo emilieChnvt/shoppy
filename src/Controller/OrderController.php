@@ -57,7 +57,7 @@ final class OrderController extends AbstractController
             $entityManager->persist($address);
             $entityManager->flush();
 
-            // Redirige vers payment avec idBilling et idShipping
+
             return $this->redirectToRoute('app_order_payment', [
                 'idBilling' => $billingAddress->getId(),
                 'idShipping' => $address->getId(),

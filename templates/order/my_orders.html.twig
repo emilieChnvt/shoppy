@@ -8,7 +8,8 @@
     {% else %}
         <ul>
             {% for order in orders %}
-                <li>Commande #{{ order.id }} - Date : {{ order.createAt|date('d/m/Y') }} - Total : {{ order.total }} €</li>
+                <li>Commande #{{ order.id }} - Date : {{ order.createAt|date('d/m/Y') }} - Total : {{ order.total }} €
+                    <a href="{{ path('generate_pdf', {id:order.id}) }}">PDF</a></li>
             {% endfor %}
         </ul>
     {% endif %}
