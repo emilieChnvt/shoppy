@@ -17,9 +17,10 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body data-turbo="false" class="h-full">
 
-        {% block body %}
+
+    {% block body %}
         {% endblock %}
     </body>
 </html>

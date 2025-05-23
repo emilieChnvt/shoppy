@@ -48,12 +48,7 @@ class GoogleController extends AbstractController
 
 
     {
-
-
-
         if ($this->getUser()) {
-
-
             return $this->redirectToRoute('app_products');
 
 

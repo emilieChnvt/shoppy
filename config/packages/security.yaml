@@ -18,7 +18,6 @@ security:
             provider: app_user_provider
             custom_authenticators:
                 - App\Security\SecurityAuthenticator
-                - App\Security\GoogleAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout

@@ -3,15 +3,15 @@
         <a class="navbar-brand mx-auto" href="#">
             <img src="{{ asset('logo + nom.png') }}" alt="" class="d-block mx-auto">
         </a>
-        <button class="navbar-toggler text-[D66853]" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler text-[D66853]" type="button" data-bs-toggle="collapse" data-bs-target="#navbarBurger" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon text-[D66853]"></span>
         </button>
-        <div class=" navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarBurger">
             <ul class="navbar-nav ">
 
                 {% for category in categories %}
                     <li class="nav-item">
-                        <a href="{{ path('app_category_show', {id: category.id}) }}" class="text-black">
+                        <a href="{{ path('app_category_show', {id: category.id}) }}" class="nav-link text-black">
                             {{ category.name }}
                         </a>
                     </li>

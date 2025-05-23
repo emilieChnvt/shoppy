@@ -1,16 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .bg-transparent {
+            background-color: transparent !important;
+        }
+
+        .border-top {
+            border-top: 1px solid #ccc !important;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #ccc !important;
+        }
+    </style>
 {{ form_start(form, { attr: { class: 'bg-transparent border-t border-b border-gray-300' } }) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
-<style>
-.bg-transparent {
-background-color: transparent !important;
-}
 
-.border-top {
-border-top: 1px solid #ccc !important;
-}
-
-.border-bottom {
-border-bottom: 1px solid #ccc !important;
-}
-</style>
+{% endblock  %}

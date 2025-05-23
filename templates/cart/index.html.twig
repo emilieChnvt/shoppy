@@ -5,7 +5,7 @@
 {% block body %}
     {% include 'navbar/nav.html.twig' %}
 
-    <div class="max-w-5xl mx-auto px-5 py-6">
+    <div class="max-w-5xl mx-auto px-2 py-6">
         <h3 class="text-2xl font-bold mb-6">Mon panier</h3>
 
         {% for item in cart %}
@@ -30,14 +30,17 @@
 
                     <p class="text-gray-700 text-sm">{{ item.product.price }} €</p>
 
-                    <form action="{{ path('app_cart_add', { id: item.product.id }) }}" method="POST"
-                          class="flex flex-row items-center justify-between gap-4">
+                    <form action="{{ path('app_cart_add', { id: item.product.id }) }}"
+                          method="POST"
+                          class="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 flex-wrap">
+
                         {% include 'quantity/bouttons.html.twig' %}
-                        <button type="submit"
-                                class="px-4 py-2 border border-[#D66853] text-[#D66853] rounded hover:bg-[#D66853] hover:text-white text-sm transition">
-                            Ajouter
+
+                        <button type="submit" class="w-full sm:w-auto btn px-4 py-2 border rounded text-sm bg-[#D66853] text-white hover:bg-[#bf503f] text-center">
+                            Ajouter au panier
                         </button>
                     </form>
+
 
                     <p class="text-sm text-gray-600">Quantité : {{ item.quantity }}</p>
 
