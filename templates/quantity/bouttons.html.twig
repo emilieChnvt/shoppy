@@ -1,0 +1,14 @@
+{% block javascripts %}
+    {% block importmap %}
+
+        {{ importmap('quantity') }}
+    {% endblock %}
+{% endblock %}
+
+<div class="quantitySelector flex items-center gap-2">
+    <button type="button" class="moins px-3 py-1 rounded-full border text-sm bg-[#D66853]">−</button>
+    <input type="number" name="quantity" value="1" min="1" id="quantityInput"
+           class="w-12 text-center text-sm border border-[#D66853] rounded-full bg-transparent" />
+    <button type="button" class="plus px-3 py-1 rounded-full border text-sm bg-[#D66853]">+</button>
+</div>
+
