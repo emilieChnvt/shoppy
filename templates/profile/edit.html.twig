@@ -1,15 +1,38 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Modifier mon profil{% endblock %}
+
 {% block body %}
+    <div class="max-w-3xl mx-auto px-4 py-10">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-8">Modifier mes informations personnelles</h2>
 
-    {{ form_start(profileForm) }}
-    {{ form_row(profileForm) }}
-    <button type="submit">edit profile</button>
-    {{ form_end(profileForm) }}
+        {{ form_start(profileForm, {'attr': {'class': 'space-y-6'}}) }}
 
+        <div>
+            {{ form_label(profileForm.name, 'Nom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+            {{ form_widget(profileForm.name, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#D66853] focus:border-[#D66853] text-sm'}}) }}
+            {{ form_errors(profileForm.name) }}
+        </div>
+
+        <div>
+            {{ form_label(profileForm.firstName, 'Prénom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+            {{ form_widget(profileForm.firstName, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#D66853] focus:border-[#D66853] text-sm'}}) }}
+            {{ form_errors(profileForm.firstName) }}
+        </div>
+
+        <div>
+            {{ form_label(profileForm.phone, 'Téléphone', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+            {{ form_widget(profileForm.phone, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#D66853] focus:border-[#D66853] text-sm'}}) }}
+            {{ form_errors(profileForm.phone) }}
+        </div>
+
+        <div>
+            <button type="submit"
+                    class="bg-[#D66853] hover:bg-[#bf503f] text-white px-6 py-2 rounded-md shadow text-sm font-semibold transition">
+                Enregistrer les modifications
+            </button>
+        </div>
+
+        {{ form_end(profileForm) }}
+    </div>
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-

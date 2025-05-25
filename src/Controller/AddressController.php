@@ -46,9 +46,9 @@ final class AddressController extends AbstractController
     }
 
     #[Route('/address/{id}/delete', name: 'app_address_delete')]
-    public function delete(Address $address, Request $request, EntityManagerInterface $entityManager): Response
+    public function delete(Address $address, EntityManagerInterface $entityManager): Response
     {
-        if($this->getUser()->getProfile() !== $address) {
+        if($this->getUser()->getProfile() !== $address->getProfile()) {
             return $this->redirectToRoute('app_products');
         }
         $entityManager->remove($address);

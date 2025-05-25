@@ -1,36 +1,42 @@
-
-
-
 {% extends 'base.html.twig' %}
 
+{% block title %}Choix de l'adresse de facturation{% endblock %}
+
 {% block body %}
+    <div class="px-4 max-w-3xl mx-auto mt-10">
+        <h3 class="text-xl font-semibold mb-6 text-gray-800">Choisir une adresse de facturation</h3>
 
-    <h3>pick a billing address</h3>
-    {% if app.user.profile.addresses %}
-        {% for address in app.user.profile.addresses %}
+        {% if app.user.profile.addresses %}
+            <div class="space-y-4">
+                {% for address in app.user.profile.addresses %}
+                    <a href="{{ path('app_order_shippingaddress',{id:address.id}) }}"
+                       class="block border rounded-lg p-4 hover:bg-gray-50 transition shadow-sm">
+                        <div class="text-gray-700">
+                            <p class="font-medium">{{ address.streetNumber }} {{ address.street }}</p>
+                            <p>{{ address.zipcode }}, {{ address.zipcode }}</p>
+                            <p>{{ address.country }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-600">Aucune adresse enregistrée.</p>
+        {% endif %}
 
-            <a href="{{ path('app_order_shippingaddress',{id:address.id}) }}">
-                <div class="flex">
-                    <p>{{ address.streetNumber }}</p>
-                    <p>{{ address.street }}</p>
-                    <p>{{ address.zipcode }}</p>
-                    <p>{{ address.country }}</p>
-                </div>
-            </a>
+        <hr class="my-8">
 
-        {% endfor %}
-    {% endif %}
+        <div>
+            <h4 class="text-lg font-semibold mb-4 text-gray-800">Ou ajouter une nouvelle adresse :</h4>
 
-    {{ form_start(form) }}
-    {{ form_row(form) }}
-    <button type="submit">next</button>
-    {{ form_end(form) }}
-
-
-{% endblock %}
-
-
-
-{% block title %}
-
+            {{ form_start(form) }}
+            <div class="space-y-4">
+                {{ form_row(form) }}
+            </div>
+            <button type="submit"
+                    class="mt-4 inline-block bg-[#D66853] hover:bg-[#bf503f] text-white px-6 py-2 rounded text-sm">
+                Continuer
+            </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

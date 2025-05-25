@@ -20,29 +20,30 @@ final class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/profile/edit/{id}', name: 'app_profile_edit')]
-    public function edit(Request $request, EntityManagerInterface $manager, Profile $profile): Response
-    {
-        if($this->getUser()->getProfile() !== $profile) {
-            return $this->redirectToRoute('app_login');
-        }
+                #[Route('/profile/edit/{id}', name: 'app_profile_edit')]
+                public function edit(Request $request, EntityManagerInterface $manager): Response
+                {
 
-        if(!$profile){return $this->redirectToRoute('app_login');}
+                    $profile = $this->getUser()->getProfile();
+                    if($this->getUser()->getProfile() !== $profile) {
+                        return $this->redirectToRoute('app_login');
+                    }
+                    if(!$profile){return $this->redirectToRoute('app_login');}
 
-        $profileForm = $this->createForm(ProfileForm::class, $profile);
-        $profileForm->handleRequest($request);
-        if($profileForm->isSubmitted() && $profileForm->isValid()) {
-            $profile->setOfUser($this->getUser());
-            $manager->persist($profile);
-            $manager->flush();
-            return $this->redirectToRoute('app_profile', ['id' => $profile->getId()]);
+                    $profileForm = $this->createForm(ProfileForm::class, $profile);
+                    $profileForm->handleRequest($request);
+                    if($profileForm->isSubmitted() && $profileForm->isValid()) {
+                        $profile->setOfUser($this->getUser());
+                        $manager->persist($profile);
+                        $manager->flush();
+                        return $this->redirectToRoute('app_profile', ['id' => $profile->getId()]);
 
-        }
+                    }
 
-        return $this->render('profile/edit.html.twig', [
-            'profileForm' => $profileForm->createView(),
+                    return $this->render('profile/edit.html.twig', [
+                        'profileForm' => $profileForm->createView(),
 
-        ]);
+                    ]);
 
-    }
-}
+                }
+            }

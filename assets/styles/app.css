@@ -5,3 +5,15 @@
 body {
     background-color: #EEE1C4;
 }
+.bootstrap-navbar * {
+    all: revert;
+    /* Cela remet à zéro les styles hérités dans ce scope */
+}
+
+/* Optionnel : tu peux aussi limiter les styles Bootstrap à ce wrapper */
+.bootstrap-navbar .navbar,
+.bootstrap-navbar .navbar * {
+    /* Ici, tu peux forcer que seuls les styles Bootstrap s'appliquent à ces éléments */
+}
+
+

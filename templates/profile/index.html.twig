@@ -1,25 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProfileController!{% endblock %}
+{% block title %}Mon Profil{% endblock %}
 
 {% block body %}
-<h2>Profile</h2>
 
-    {% if app.user %}
-        <p>Nom: {{ profile.name }}</p>
-        <p>Prénom: {{ profile.firstName }}</p>
-        <p>Téléphone: {{ profile.phone }}</p>
-        {% for address in profile.addresses %}
-            <div class="flex flex-col">
-                <div class="flex"><p>{{ address.streetNumber }}</p>, <p>{{ address.street }}</p></div>
-                <div class="flex"><p>{{ address.zipcode }}</p>, <p>{{ address.country }}</p></div>
+    <div class="px-4 max-w-7xl mx-auto mt-5">
 
-                <a href="{{ path('app_address_delete', {id:address.id}) }}" class="btn btn-yellow">supp</a>
+        <h2 class="text-2xl font-semibold mb-6">Mon Profil</h2>
+
+        {% if app.user %}
+            <div class="border rounded p-6 mb-8 space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-sm text-gray-500">Nom</p>
+                        <p class="text-lg font-semibold text-gray-800">{{ profile.name }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Prénom</p>
+                        <p class="text-lg font-semibold text-gray-800">{{ profile.firstName }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Téléphone</p>
+                        <p class="text-lg font-semibold text-gray-800">{{ profile.phone }}</p>
+                    </div>
+                </div>
+
+                <!-- Adresses -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Adresses enregistrées</h3>
+
+                    {% if profile.addresses|length > 0 %}
+                        <div class="space-y-4">
+                            {% for address in profile.addresses %}
+                                <div class="border rounded p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                                    <div class="text-gray-700">
+                                        <p>{{ address.streetNumber }} {{ address.street }}</p>
+                                        <p>{{ address.zipcode }}, {{ address.country }}</p>
+                                    </div>
+                                    <a href="{{ path('app_address_delete', {id:address.id}) }}"
+                                       class="mt-2 sm:mt-0 text-sm text-red-600 hover:underline">
+                                        Supprimer
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-sm text-gray-500 italic">Aucune adresse enregistrée.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Boutons -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="{{ path('app_profile_edit', {id:profile.id}) }}"
+                       class="bg-[#D66853] hover:bg-[#bf503f] text-white px-5 py-2 rounded text-sm font-semibold transition">
+                        Modifier mon profil
+                    </a>
+                    <a href="{{ path('app_address_new', {id:profile.id}) }}"
+                       class="border border-gray-300 hover:bg-gray-100 text-gray-800 px-5 py-2 rounded text-sm font-medium transition">
+                        Ajouter une adresse
+                    </a>
+                </div>
             </div>
-        {% endfor %}
-        <a href="{{ path('app_profile_edit', {id:profile.id}) }}" class="border">edit your profile</a>
-        <a href="{{ path('app_address_new', {id:profile.id}) }}" class="border"> ajoute des addresses</a>
-
-
-    {% endif %}
+        {% else %}
+            <p class="text-gray-600">Aucun utilisateur connecté.</p>
+        {% endif %}
+    </div>
 {% endblock %}

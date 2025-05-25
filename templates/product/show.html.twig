@@ -50,13 +50,13 @@
             <div class="flex justify-between items-center">
                 <h3 class="text-xl font-semibold">Avis des clients</h3>
                 <a href="{{ path('app_feedback_create', {id:product.id}) }}" class="border rounded p-2">
-                    {{ ux_icon('ic:outline-plus', {class: 'w-5 h-5'}) }}
+                    {{ ux_icon('ic:outline-plus', {class: 'w-[25px] h-[25px]'}) }}
                 </a>
             </div>
 
             {% if product.feedback|length > 0 %}
                 <div class="flex justify-between items-center mt-2">
-                    <p class="flex items-center">{{ product.getAverageProductRating(product) }}/5 {{ ux_icon('material-symbols:star-outline-rounded',{ class :'w-5 h-5'}) }}</p>
+                    <p class="flex items-center">{{ product.getAverageProductRating(product) }}/5 {{ ux_icon('material-symbols:star-outline-rounded',{ class :'w-[25px] h-[25px]'}) }}</p>
                     <p>{{ product.feedback|length }} avis</p>
                 </div>
             {% endif %}
@@ -71,21 +71,23 @@
 
                         <div class="mt-3 flex flex-col gap-y-2">
                             <p class="bg-green-100 text-green-800 px-3 py-1 rounded inline-flex items-center w-max">
-                                {{ feedback.productRating }}/5 {{ ux_icon('material-symbols:star-outline-rounded',{ class :'w-5 h-5'}) }}
+                                {{ feedback.productRating }}/5 {{ ux_icon('material-symbols:star-outline-rounded',{ class :'w-[25px] h-[25px]'}) }}
                             </p>
                             <p class="text-gray-800">content : {{ feedback.content }}</p>
                         </div>
 
                         <div class="flex justify-between items-center mt-4">
                             <a href="{{ path('app_feedback_rating', {id:feedback.id}) }}" class="text-sm">
-                                <span class="flex items-center">{{ feedback.getAverageRelevance(feedback) }} {{ ux_icon('material-symbols:star-outline-rounded',{ class :'w-5 h-5'}) }}</span>
+                                <span class="flex items-center">{{ feedback.getAverageRelevance(feedback) }} {{ ux_icon('material-symbols:star-outline-rounded',{ class :'w-[25px] h-[25px]'}) }}</span>
                                 <span class="text-xs text-gray-600">Pertinence</span>
                             </a>
 
                             {% if app.user.profile == feedback.author %}
                                 <div class="flex gap-3">
-                                    <a href="{{ path('app_feedback_edit', {id:feedback.id}) }}" class="btn btn-outline-primary">{{ ux_icon('material-symbols:edit-outline',{ class :'w-5 h-5'}) }}</a>
-                                    <a href="{{ path('app_feedback_delete', {id:feedback.id}) }}" class="btn btn-outline-danger">{{ ux_icon('tabler:trash',{ class :'w-5 h-5'}) }}</a>
+                                    <a href="{{ path('app_feedback_edit', {id:feedback.id}) }}" class="btn btn-outline-primary">{{ ux_icon('material-symbols:edit-outline',{ class :'w-[25px] h-[25px]'}) }}</a>
+                                    <a href="{{ path('app_feedback_delete', {id:feedback.id}) }}" class="btn btn-outline-danger ">
+                                        {{ ux_icon('tabler:trash',{ class :'w-[25px] h-[25px] '}) }}
+                                    </a>
                                 </div>
                             {% endif %}
                         </div>
