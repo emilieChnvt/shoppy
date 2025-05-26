@@ -24,7 +24,7 @@ final class EmployeeController extends AbstractController
     }
 
     #[Route('/order/{id}', name: 'app_employee_show')]
-    public function show(Order $order, CartService $cartService): Response
+    public function show(Order $order): Response
     {
         if(!in_array("ROLE_EMPLOYEE", $this->getUser()->getRoles())){ return $this->redirectToRoute('app_login');}
 

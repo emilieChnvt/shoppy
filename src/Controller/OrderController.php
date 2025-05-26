@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Form\AddressForm;
 use App\Repository\AddressRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\OrderRepository;
 use App\Service\CartService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -79,8 +80,6 @@ final class OrderController extends AbstractController
         $shipping = $addressRepository->find($idShipping);
 
 
-
-
         return $this->render('order/payement.html.twig',[
             'cart' => $cartService->getCart(),
             'total'=>$cartService->getTotalPrice(),
@@ -94,7 +93,7 @@ final class OrderController extends AbstractController
 
     #[Route('/order/validate/{idBilling}/{idShipping}', name: 'app_order_validate')]
 
-    public function validate(EntityManagerInterface $manager,  AddressRepository $addressRepository, $idBilling, $idShipping, CartService $cartService):Response
+    public function validate( EntityManagerInterface $manager,  AddressRepository $addressRepository, $idBilling, $idShipping, CartService $cartService):Response
     {
         $billing = $addressRepository->find($idBilling);
         $shipping = $addressRepository->find($idShipping);
@@ -113,10 +112,10 @@ final class OrderController extends AbstractController
             $orderItem->setOfOrder($order);
             $orderItem->setProduct($cartItem['product']);
             $orderItem->setQuantity($cartItem['quantity']);
+            $order->getOrderItems()->add($orderItem);
             $manager->persist($orderItem);
 
 
-            //new stock after an order
             $product = $cartItem['product'];
             $newtStock = $product->getStock() - $cartItem['quantity'];
             $product->setStock($newtStock);
@@ -124,13 +123,17 @@ final class OrderController extends AbstractController
         }
         $manager->flush();
         $cartService->emptyCart();
-        return $this->redirectToRoute('app_my_orders');
+        return $this->render('order/success.html.twig',[
+            'order' => $order,
+            'billing' => $billing,
+            'shipping' => $shipping,
+        ]);
 
 
     }
 
     #[Route('/myorders', name: 'app_my_orders')]
-    public function myOrders(OrderRepository $orderRepository): Response
+    public function myOrders( CategoryRepository $categoryRepository, OrderRepository $orderRepository): Response
     {
         $profile = $this->getUser()->getProfile();
 
@@ -138,6 +141,7 @@ final class OrderController extends AbstractController
 
         return $this->render('order/my_orders.html.twig', [
             'orders' => $orders,
+            'categories'=>$categoryRepository->findAll(),
         ]);
     }
 }

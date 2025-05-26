@@ -36,7 +36,7 @@ final class ProfileController extends AbstractController
                         $profile->setOfUser($this->getUser());
                         $manager->persist($profile);
                         $manager->flush();
-                        return $this->redirectToRoute('app_profile', ['id' => $profile->getId()]);
+                        return $this->redirectToRoute('app_order_billingaddress');
 
                     }
 
