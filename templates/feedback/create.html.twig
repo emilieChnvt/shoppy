@@ -1,21 +1,38 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Donnez votre avis{% endblock %}
+
 {% block body %}
+    <div class="px-4 max-w-3xl mx-auto mt-8 bg-[#fdf6f2] rounded-lg border border-[#d7cfc8] p-6 shadow-sm">
 
-    {{ form_start(feedbackForm) }}
-    {{ form_row(feedbackForm.content) }}
+        <h2 class="text-2xl font-semibold mb-6 text-[#6b4a3a]">Donnez votre avis</h2>
 
-    <label>Note :</label>
-    <div class="rating">
-        {{ form_widget(feedbackForm.productRating) }}
+        {{ form_start(feedbackForm, {'attr': {'class': 'space-y-5'}}) }}
+
+        <div>
+            {{ form_label(feedbackForm.content, 'Votre message', {'label_attr': {'class': 'block mb-1 text-[#8b6e58] font-medium'}}) }}
+            {{ form_widget(feedbackForm.content, {
+                'attr': {
+                    'class': 'w-full border border-[#d7cfc8] rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-[#d66853] text-[#4a3f35]',
+                    'rows': 5
+                }
+            }) }}
+            {{ form_errors(feedbackForm.content) }}
+        </div>
+
+        <div>
+            <label class="block mb-1 text-[#8b6e58] font-medium">Note :</label>
+            <div class="flex items-center gap-3">
+                {{ form_widget(feedbackForm.productRating, {'attr': {'class': 'text-[#d66853]'}}) }}
+            </div>
+            {{ form_errors(feedbackForm.productRating) }}
+        </div>
+
+        <button type="submit"
+                class="w-full bg-[#D66853] text-white py-3 rounded-xl font-semibold hover:bg-[#bf503f] transition">
+            Envoyer
+        </button>
+
+        {{ form_end(feedbackForm) }}
     </div>
-
-    <button type="submit">Envoyer</button>
-    {{ form_end(feedbackForm) }}
-
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-
