@@ -1,17 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-
-
-{% endblock %}
+{% block title %}Modifier le produit{% endblock %}
 
 {% block body %}
+    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-lg rounded-2xl p-8 bg-[#FFF8F3] shadow-lg border border-[#D66853]">
+            <h2 class="text-3xl font-bold text-center text-[#D66853] mb-8 tracking-wide">Modifier le produit</h2>
 
-    {{ form_start(productForm) }}
-    {{ form_row(productForm) }}
-    <button type="submit">edit</button>
-    {{ form_end(productForm) }}
+            {{ form_start(productForm) }}
 
+            <div class="space-y-6">
+                <div>
+                    {{ form_label(productForm.name, null, {attr: {class: "block text-sm font-semibold text-[#6B4C3B]"}}) }}
+                    {{ form_widget(productForm.name, {attr: {class: "mt-1 w-full px-4 py-2 border border-[#D66853] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D66853] focus:border-transparent bg-[#F4E6DC] text-[#6B4C3B]"}}) }}
+                    <div class="text-sm text-red-600 mt-1">{{ form_errors(productForm.name) }}</div>
+                </div>
 
+                <div>
+                    {{ form_label(productForm.price, null, {attr: {class: "block text-sm font-semibold text-[#6B4C3B]"}}) }}
+                    {{ form_widget(productForm.price, {attr: {class: "mt-1 w-full px-4 py-2 border border-[#D66853] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D66853] focus:border-transparent bg-[#F4E6DC] text-[#6B4C3B]"}}) }}
+                    <div class="text-sm text-red-600 mt-1">{{ form_errors(productForm.price) }}</div>
+                </div>
+
+                <div>
+                    {{ form_label(productForm.description, null, {attr: {class: "block text-sm font-semibold text-[#6B4C3B]"}}) }}
+                    {{ form_widget(productForm.description, {attr: {class: "mt-1 w-full px-4 py-2 border border-[#D66853] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D66853] focus:border-transparent bg-[#F4E6DC] text-[#6B4C3B]", rows: 5}}) }}
+                    <div class="text-sm text-red-600 mt-1">{{ form_errors(productForm.description) }}</div>
+                </div>
+
+                <div>
+                    {{ form_label(productForm.stock, null, {attr: {class: "block text-sm font-semibold text-[#6B4C3B]"}}) }}
+                    {{ form_widget(productForm.stock, {attr: {class: "mt-1 w-full px-4 py-2 border border-[#D66853] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D66853] focus:border-transparent bg-[#F4E6DC] text-[#6B4C3B]"}}) }}
+                    <div class="text-sm text-red-600 mt-1">{{ form_errors(productForm.stock) }}</div>
+                </div>
+
+                <div>
+                    {{ form_label(productForm.category, null, {attr: {class: "block text-sm font-semibold text-[#6B4C3B]"}}) }}
+                    {{ form_widget(productForm.category, {attr: {class: "mt-1 w-full px-4 py-2 border border-[#D66853] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D66853] focus:border-transparent bg-[#F4E6DC] text-[#6B4C3B]"}}) }}
+                    <div class="text-sm text-red-600 mt-1">{{ form_errors(productForm.category) }}</div>
+                </div>
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-[#D66853] hover:bg-[#bf503f] transition-colors duration-300 text-white font-semibold py-3 rounded-lg shadow-md tracking-wide mt-6">
+                Modifier
+            </button>
+
+            {{ form_end(productForm) }}
+        </div>
+    </div>
 {% endblock %}
-

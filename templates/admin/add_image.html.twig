@@ -1,14 +1,37 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Ajouter des images{% endblock %}
+
 {% block body %}
-    {{ form_start(imageForm) }}
-    {{ form_widget(imageForm) }}
-    <button type="submit">addimage</button>
-    {{ form_end(imageForm) }}
+    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-lg bg-[#FFF8F3] rounded-2xl p-8 shadow-lg border border-[#D66853]">
+            <h2 class="text-3xl font-bold text-center text-[#D66853] mb-6">Ajouter des images</h2>
 
+            {{ form_start(imageForm) }}
+
+            {{ form_row(imageForm.imageFiles, {
+                attr: {
+                    multiple: true,
+                    class: "w-full px-4 py-2 border border-[#D66853] rounded-lg bg-[#F4E6DC]"
+                },
+                label_attr: {
+                    class: "block mb-2 text-sm font-semibold text-[#6B4C3B]"
+                }
+            }) }}
+
+            <button type="submit" class="mt-6 w-full bg-[#D66853] text-white font-semibold py-2.5 rounded-lg">
+                Ajouter les images
+            </button>
+
+            {{ form_end(imageForm) }}
+
+            {% if images is defined and images|length > 0 %}
+                <div class="mt-8 grid grid-cols-3 gap-4">
+                    {% for image in images %}
+                        <img src="{{ vich_uploader_asset(image) | imagine_filter('productBasket')}}" alt="Image" class="rounded-lg object-cover w-full h-32">
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-

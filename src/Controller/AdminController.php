@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin')]
 final class AdminController extends AbstractController
 {
-    #[Route('/products', name: 'app_products')]
+    #[Route('/products', name: 'app_admin_products')]
     public function index(ProductRepository $productRepository): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -28,58 +28,72 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/products/addImages', name: 'app_product_addImages')]
-    public function addImage(Request $request, EntityManagerInterface $entityManager):Response
+    #[Route('/product/{id}', name: 'app_admin_product')]
+    public function show(Product $product): Response
     {
-        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
+        return $this->render('admin/show.html.twig', [
+            'product'=>$product,
+        ]);
+    }
 
-        $image =new Images();
-        $imageForm = $this->createForm(ImagesForm::class, $image);
-        $imageForm->handleRequest($request);
-        if($imageForm->isSubmitted() && $imageForm->isValid()) {
-            $entityManager->persist($image);
+    #[Route('/products/{id}/add-images', name: 'app_product_addImages_product')]
+    public function addImages(Request $request, EntityManagerInterface $entityManager, Product $product): Response
+    {
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $form = $this->createForm(ImagesForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $files = $form->get('imageFiles')->getData();
+
+            foreach ($files as $file) {
+                $image = new Images();
+                $image->setImageFile($file);
+                $image->setProduct($product);
+                $entityManager->persist($image);
+            }
+
             $entityManager->flush();
-            return $this->redirectToRoute('app_product_create', ['id'=>$image->getId()]);
 
+            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
         }
 
         return $this->render('admin/add_image.html.twig', [
-            'imageForm' => $imageForm,
-            'image'=>$image,
+            'imageForm' => $form->createView(),
+            'product' => $product,
+            'images' => $product->getImages()
         ]);
-
-
     }
 
 
-    #[Route('/product/create/{id}', name: 'app_product_create')]
-    public function create(Request $request, EntityManagerInterface $entityManager, Images $images): Response
+    #[Route('/product/create', name: 'app_product_create')]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $product = new Product();
         $productForm = $this->createForm(ProductForm::class, $product);
         $productForm->handleRequest($request);
-        if($productForm->isSubmitted() && $productForm->isValid()) {
+
+        if ($productForm->isSubmitted() && $productForm->isValid()) {
             $product->setCreateAt(new \DateTimeImmutable());
-            $product->addImage($images);
             $entityManager->persist($product);
             $entityManager->flush();
 
-
-            return $this->redirectToRoute('app_products');
+            return $this->redirectToRoute('app_product_addImages_product', ['id' => $product->getId()]);
         }
 
         return $this->render('admin/create.html.twig', [
             'productForm' => $productForm,
-            'images'=>$images,
-
         ]);
-
-
     }
 
-    #[Route('/product/{id}/edit', name: 'app_product_edit')]
+    #[Route('/product/edit/{id}', name: 'app_product_edit')]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager,): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
@@ -90,34 +104,13 @@ final class AdminController extends AbstractController
         if($productForm->isSubmitted() && $productForm->isValid()) {
             $entityManager->persist($product);
             $entityManager->flush();
-            return $this->redirectToRoute('app_product_show', ['id'=>$product->getId()]);
+            return $this->redirectToRoute('app_product_addImages_product', ['id' => $product->getId()]);
         }
         return $this->render('admin/edit.html.twig', [
             'productForm' => $productForm,
         ]);
 
 
-    }
-    #[Route('/products/addImages/{id}', name: 'app_product_addImages_product')]
-    public function editImage(Request $request, EntityManagerInterface $entityManager, Product $product):Response
-    {
-        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-            return $this->redirectToRoute('app_login');
-        }
-
-        $image = new Images();
-        $imageForm = $this->createForm(ImagesForm::class, $image);
-        $imageForm->handleRequest($request);
-        if ($imageForm->isSubmitted() && $imageForm->isValid()) {
-            $image->setProduct($product);
-            $entityManager->persist($image);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_product_show', ['id' => $image->getId()]);
-        }
-
-        return $this->render('admin/add_image.html.twig', [
-            'imageForm' => $imageForm,
-        ]);
     }
 
     #[Route('/product/delete/{id}', name: 'app_product_delete')]
@@ -133,7 +126,7 @@ final class AdminController extends AbstractController
         }
 
 
-        return $this->redirectToRoute('app_products');
+        return $this->redirectToRoute('app_admin_products');
     }
 
 

@@ -1,14 +1,44 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Créer un produit{% endblock %}
+
 {% block body %}
-    {{ form_start(productForm) }}
-    {{ form_row(productForm) }}
+    <div class="min-h-screen flex items-center justify-center  px-4 py-12">
+        <div class="w-full max-w-md bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+            <h1 class="text-3xl font-bold text-center text-[#D66853] mb-6">Créer un produit</h1>
 
-    <button type="submit">create product</button>
-    {{ form_end(productForm) }}
+            {{ form_start(productForm, {attr: {class: "space-y-6"}}) }}
+
+            {{ form_row(productForm.name, {
+                attr: {class: "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D66853]"},
+                label_attr: {class: "block mb-1 font-semibold text-gray-700"}
+            }) }}
+
+            {{ form_row(productForm.price, {
+                attr: {class: "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D66853]"},
+                label_attr: {class: "block mb-1 font-semibold text-gray-700"}
+            }) }}
+
+            {{ form_row(productForm.description, {
+                attr: {class: "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D66853]"},
+                label_attr: {class: "block mb-1 font-semibold text-gray-700"}
+            }) }}
+
+            {{ form_row(productForm.stock, {
+                attr: {class: "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D66853]"},
+                label_attr: {class: "block mb-1 font-semibold text-gray-700"}
+            }) }}
+
+            {{ form_row(productForm.category, {
+                attr: {class: "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D66853]"},
+                label_attr: {class: "block mb-1 font-semibold text-gray-700"}
+            }) }}
+
+            <button type="submit" class="w-full bg-[#D66853] hover:bg-[#bf503f] transition-colors duration-300 text-white font-semibold py-2.5 rounded-lg shadow">
+                Créer le produit
+            </button>
+
+            {{ form_end(productForm) }}
+        </div>
+    </div>
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-

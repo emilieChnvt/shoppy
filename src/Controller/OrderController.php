@@ -121,6 +121,7 @@ final class OrderController extends AbstractController
             $product->setStock($newtStock);
             $manager->persist($product);
         }
+        dump('validate called', $order);
         $manager->flush();
         $cartService->emptyCart();
         return $this->render('order/success.html.twig',[

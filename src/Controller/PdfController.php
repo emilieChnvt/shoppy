@@ -22,7 +22,16 @@ class PdfController extends AbstractController
     #[Route('/pdf/{id}', name: 'generate_pdf')]
     public function generatePdf(Order $order): Response
     {
-        if($this->getUser()->getProfile() !== $order->getCustomer() ) { return $this->redirectToRoute('app_login'); }
+        $user = $this->getUser();
+        $roles = $user->getRoles();
+
+        if (
+            $user->getProfile() !== $order->getCustomer() &&
+            !in_array('ROLE_ADMIN', $roles) &&
+            !in_array('ROLE_EMPLOYEE', $roles)
+        ) {
+            return $this->redirectToRoute('app_login');
+        }
         $html = $this->renderView('pdf/template.html.twig', [
             'title' => 'Mon super PDF',
             'order'=>$order,

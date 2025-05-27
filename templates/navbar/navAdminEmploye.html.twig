@@ -1,0 +1,8 @@
+<nav class="w-60 bg-white border-r border-gray-200 flex flex-col p-6 space-y-4">
+    <a href="{{ path('app_chart') }}" class="text-[#D66853] font-semibold hover:underline">Dashboard</a>
+
+    {% if "ROLE_ADMIN" in app.user.roles %}
+    <a href="{{ path('app_admin_products') }}" class="text-[#D66853] font-semibold hover:underline">Products</a>
+    {% endif %}
+    <a href="{{ path('app_employee') }}" class="text-[#D66853] font-semibold hover:underline">Orders</a>
+</nav>

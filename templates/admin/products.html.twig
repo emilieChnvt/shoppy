@@ -1,37 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProductController!{% endblock %}
+{% block title %}Produits - Admin{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_product_addImages') }}">create new product</a>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }} stock  : {{ product.stock }}</td>
-                <td>
-                    <a href="{{ path('app_product_show', {id:product.id}) }}">show</a>
-                    <a href="{{ path('app_product_edit', {id:product.id}) }}">edit</a>
-                    <a href="{{ path('app_product_delete', {id:product.id}) }}">delete</a>
-                    <a href="{{ path('app_cart_add', {id:product.id, quantity:1}) }}">add to cart</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="flex min-h-screen">
+        {% include 'navbar/navAdminEmploye.html.twig' %}
 
+        <!-- Main content -->
+        <main class="flex-1 px-6 py-8 overflow-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-[#D66853]">Liste des produits</h1>
+                <div class="flex gap-4">
+                    <a href="{{ path('app_product_create') }}"
+                       class="bg-[#D66853] hover:bg-[#bf503f] text-white px-4 py-2 rounded-lg shadow transition duration-200">
+                        + Ajouter un produit
+                    </a>
+                    <a href="{{ path('app_category_create') }}"
+                       class="bg-[#D66853] hover:bg-[#bf503f] text-white px-4 py-2 rounded-lg shadow transition duration-200">
+                        + Ajouter une catégorie
+                    </a>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg shadow border">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-[#D66853] text-white">
+                    <tr>
+                        <th class="text-left px-6 py-3 text-sm font-semibold">ID</th>
+                        <th class="text-left px-6 py-3 text-sm font-semibold">Nom</th>
+                        <th class="text-left px-6 py-3 text-sm font-semibold">Prix / Stock</th>
+                        <th class="text-left px-6 py-3 text-sm font-semibold">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-6 py-4 text-sm text-gray-800">{{ product.id }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-800 font-medium">{{ product.name }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-800">
+                                {{ product.price }} €<br>
+                                <span class="text-xs text-gray-500">Stock : {{ product.stock }}</span>
+                            </td>
+                            <td class="px-6 py-4 flex flex-wrap gap-2">
+                                <a href="{{ path('app_admin_product', {id: product.id}) }}"
+                                   class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded hover:bg-blue-200 transition">
+                                    Voir
+                                </a>
+                                <a href="{{ path('app_product_edit', {id: product.id}) }}"
+                                   class="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded hover:bg-yellow-200 transition">
+                                    Modifier
+                                </a>
+                                <a href="{{ path('app_product_delete', {id: product.id}) }}"
+                                   class="text-sm bg-red-100 text-red-800 px-3 py-1 rounded hover:bg-red-200 transition">
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-gray-500 py-6">Aucun produit trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
 {% endblock %}

@@ -1,30 +1,51 @@
-<table>
+<h1 style="text-align: center;">FACTURE</h1>
+
+<p><strong>Date :</strong> 27/05/2025</p>
+<p><strong>Commande #</strong>12345</p>
+<p><strong>Client :</strong> Jean Dupont</p>
+<p><strong>Adresse de facturation :</strong> 12 rue des Lilas, 75000 Paris</p>
+<p><strong>Adresse de livraison :</strong> 5 avenue des Champs, 75008 Paris</p>
+
+<hr>
+
+<table width="100%" border="1" cellspacing="0" cellpadding="8">
     <thead>
-    <tr>
-        <th>Produit</th>
-        <th>Prix unitaire</th>
-        <th>Quantité</th>
-        <th>Sous-total</th>
+    <tr style="background-color: #f0f0f0;">
+        <th align="left">Produit</th>
+        <th align="right">Prix unitaire</th>
+        <th align="right">Quantité</th>
+        <th align="right">Sous-total</th>
     </tr>
     </thead>
     <tbody>
-    {% for item in order.orderItems %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.product.price }} €</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.quantity * item.product.price }} €</td>
-        </tr>
-    {% else %}
-        <tr>
-            <td >Aucun produit dans cette commande.</td>
-        </tr>
-    {% endfor %}
+    <tr>
+        <td>Clavier mécanique</td>
+        <td align="right">59.99 €</td>
+        <td align="right">1</td>
+        <td align="right">59.99 €</td>
+    </tr>
+    <tr>
+        <td>Souris gaming</td>
+        <td align="right">39.90 €</td>
+        <td align="right">2</td>
+        <td align="right">79.80 €</td>
+    </tr>
+    <tr>
+        <td>Tapis de souris XXL</td>
+        <td align="right">19.95 €</td>
+        <td align="right">1</td>
+        <td align="right">19.95 €</td>
+    </tr>
     </tbody>
     <tfoot>
     <tr>
-        <td ><strong>Total</strong></td>
-        <td><strong>{{ order.total }} €</strong></td>
+        <td colspan="3" align="right"><strong>Total</strong></td>
+        <td align="right"><strong>159.74 €</strong></td>
     </tr>
     </tfoot>
 </table>
+
+<hr>
+
+<p><strong>Statut :</strong> Commandé</p>
+<p><em>Merci pour votre achat !</em></p>

@@ -1,29 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EmployeeController!{% endblock %}
+{% block title %}Commandes - Admin / Employé{% endblock %}
 
 {% block body %}
-    <h1>Commandes</h1>
+    <div class="min-h-screen flex">
+            {% include 'navbar/navAdminEmploye.html.twig' %}
 
-    {% if orders is empty %}
-        <p>Pas de commandes.</p>
-    {% else %}
-        <ul class="flex flex-col">
-            {% for order in orders %}
-                <div class="border">
-                    <a href="{{ path('app_employee_show', {id:order.id}) }}">Commande #{{ order.id }} - From : {{ order.customer.name}} - Date : {{ order.createAt|date('d/m/Y') }} - Status : {{ order.status}} - Total : {{ order.total }} €  - </a>
-                    <a href="{{ path('generate_pdf', {id:order.id}) }}">PDF</a>
+        <div class="flex-1 px-6 py-12 overflow-y-auto">
+            <h1 class="text-3xl font-bold text-[#D66853] mb-8">Commandes</h1>
 
-                        {%if order.status == 1 %}
-                            <p class="bg-secondary">commandé</p>
-                        {% elseif order.status == 2 %}
-                            <p class="bg-primary">en cours de livraison</p>
-                        {% else %}
-                            <p class="bg-sucess">en cours de livraison</p>
-                        {% endif %}
+            {% if orders is empty %}
+                <p class="text-gray-500 text-center">Pas de commandes.</p>
+            {% else %}
+                <ul class="space-y-6">
+                    {% for order in orders %}
+                        <li class="border border-[#D66853] rounded-lg p-4 shadow hover:shadow-lg transition-shadow bg-[#FFF8F3] flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <a href="{{ path('app_employee_show', {id: order.id}) }}" class="text-lg font-semibold text-[#6B4C3B] hover:text-[#bf503f] transition">
+                                Commande #{{ order.id }} - Client : {{ order.customer.name }} - Date : {{ order.createAt|date('d/m/Y') }}
+                            </a>
 
-                </div>
-            {% endfor %}
-        </ul>
-    {% endif %}
+                            <div class="flex flex-col md:flex-row md:items-center md:gap-6 text-[#6B4C3B] text-sm">
+                                <span>Status :
+                                    {% if order.status == 1 %}
+                                        <span class="inline-block bg-[#D66853] text-white rounded-full px-3 py-1 font-semibold">Commandé</span>
+                                    {% elseif order.status == 2 %}
+                                        <span class="inline-block bg-[#F59E0B] text-white rounded-full px-3 py-1 font-semibold">En cours de livraison</span>
+                                    {% else %}
+                                        <span class="inline-block bg-[#10B981] text-white rounded-full px-3 py-1 font-semibold">Livré</span>
+                                    {% endif %}
+                                </span>
+
+                                <span>Total : <strong>{{ order.total }} €</strong></span>
+
+                                <a href="{{ path('generate_pdf', {id: order.id}) }}"
+                                   class="inline-block bg-[#D66853] hover:bg-[#bf503f] text-white px-4 py-1 rounded shadow transition duration-300">
+                                    PDF
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

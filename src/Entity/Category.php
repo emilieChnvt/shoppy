@@ -24,8 +24,9 @@ class Category
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'category')]
     private Collection $product;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $type = null;
+
 
     public function __construct()
     {

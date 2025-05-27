@@ -23,7 +23,7 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/category/{id}', name: 'app_category_show')]
+    #[Route('/category/show/{id}', name: 'app_category_show')]
     public function showCategory(Category $category, CategoryRepository $categoryRepository): Response
     {
         return $this->render('product/index.html.twig', [
@@ -35,7 +35,7 @@ final class CategoryController extends AbstractController
 
 
     #[Route('/category/create', name: 'app_category_create')]
-    public function create(Request $request, EntityManagerInterface $manager): Response
+    public function create(Request $request, EntityManagerInterface $manager, CategoryRepository $categoryRepository): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
             return $this->redirectToRoute('app_login');
@@ -46,12 +46,28 @@ final class CategoryController extends AbstractController
         if($categoryForm->isSubmitted() && $categoryForm->isValid()){
             $manager->persist($category);
             $manager->flush();
-            return $this->redirectToRoute('app_product_addImages');
+            return $this->redirectToRoute('app_category_create');
         }
 
         return $this->render('category/create.html.twig', [
             'categoryForm' => $categoryForm->createView(),
+            'categories' => $categoryRepository->findAll(),
         ]);
+    }
+
+    #[Route('/category/delete/{id}', name: 'app_category_delete')]
+    public function delete(Category $category, EntityManagerInterface $manager): Response
+    {
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_login');
+        }
+        if($category){
+            $manager->remove($category);
+            $manager->flush();
+        }
+        return $this->redirectToRoute('app_category_create');
+
+
     }
 
 

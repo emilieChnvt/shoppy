@@ -1,0 +1,53 @@
+
+    {% extends 'base.html.twig' %}
+
+    {% block title %}Détails du produit{% endblock %}
+
+    {% block body %}
+        <div class="min-h-screen flex items-center justify-center px-4 py-12">
+            <div class="w-full max-w-4xl bg-[#FFF8F3] rounded-2xl p-8 shadow-lg border border-[#D66853]">
+                <h1 class="text-3xl font-bold text-center text-[#D66853] mb-8">Détails du produit</h1>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Images -->
+                    <div class="lg:w-1/2">
+                        {% if product.images|length > 0 %}
+                            <img src="{{ vich_uploader_asset(product.images[0]) | imagine_filter('productShow') }}" alt="{{ product.name }}" class="w-full rounded-lg mb-4 object-cover h-72">
+                            <div class="grid grid-cols-4 gap-2">
+                                {% for image in product.images %}
+                                    <img src="{{ vich_uploader_asset(image) | imagine_filter('productBasket') }}" alt="{{ product.name }}" class="rounded cursor-pointer object-cover h-20 w-full"
+                                        >
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="w-full h-72 bg-gray-200 rounded flex items-center justify-center text-gray-500">
+                                Pas d'image disponible
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Infos produit -->
+                    <div class="lg:w-1/2 flex flex-col justify-center gap-6">
+                        <h2 class="text-2xl font-semibold text-[#6B4C3B]">{{ product.name }}</h2>
+                        <p class="text-gray-700 whitespace-pre-line">{{ product.description }}</p>
+                        <p class="text-xl font-bold text-[#D66853]">{{ product.price }} €</p>
+                        <p class="text-gray-600">Stock : <span class="{{ product.stock > 0 ? 'text-green-600' : 'text-red-600' }}">{{ product.stock }}</span></p>
+                        <p class="text-gray-600">Catégorie : {{ product.category.name }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-center gap-4">
+                    <a href="{{ path('app_product_edit', {id: product.id}) }}" class="px-6 py-2 bg-[#D66853] text-white rounded hover:bg-[#bf503f] transition">
+                        Modifier
+                    </a>
+                    <a href="{{ path('app_admin_products') }}" class="px-6 py-2 border border-[#D66853] text-[#D66853] rounded hover:bg-[#D66853] hover:text-white transition">
+                        Retour à la liste
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+    {% endblock %}
+
+
