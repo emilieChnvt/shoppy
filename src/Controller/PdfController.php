@@ -33,7 +33,6 @@ class PdfController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $html = $this->renderView('pdf/template.html.twig', [
-            'title' => 'Mon super PDF',
             'order'=>$order,
 
         ]);

@@ -1,51 +1,86 @@
-<h1 style="text-align: center;">FACTURE</h1>
-
-<p><strong>Date :</strong> 27/05/2025</p>
-<p><strong>Commande #</strong>12345</p>
-<p><strong>Client :</strong> Jean Dupont</p>
-<p><strong>Adresse de facturation :</strong> 12 rue des Lilas, 75000 Paris</p>
-<p><strong>Adresse de livraison :</strong> 5 avenue des Champs, 75008 Paris</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture</title>
+    <style>
+        body { font-family: DejaVu Sans, sans-serif; color: #333; font-size: 12px; }
+        .header, .footer { text-align: center; }
+        .logo { width: 80px; }
+        .title { font-size: 22px; margin-top: 10px; }
+        .section { margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 8px; border: 1px solid #ccc; text-align: left; }
+        .totals td { border: none; }
+        .totals .label { text-align: right; }
+        .bold { font-weight: bold; }
+        .bg-light { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img src="{{ absolute_url(asset('logo + nom.png')) }}" class="logo">
+    <div class="title">NaturalJewelry</div>
+</div>
 
 <hr>
 
-<table width="100%" border="1" cellspacing="0" cellpadding="8">
-    <thead>
-    <tr style="background-color: #f0f0f0;">
-        <th align="left">Produit</th>
-        <th align="right">Prix unitaire</th>
-        <th align="right">Quantité</th>
-        <th align="right">Sous-total</th>
+<div class="section">
+    <table>
+        <tr>
+            <td>
+                <strong>DESTINATAIRE DE LA FACTURE</strong><br>
+                {{ order.customer.name }}  {{ order.customer.firstName }}<br>
+                {{ order.customer.ofUser.email }}<br>
+                {{ order.customer.phone }}<br>
+                {{ order.shippingAddress.street }} {{ order.shippingAddress.street }}<br>
+                 {{ order.shippingAddress.zipcode }}, {{ order.shippingAddress.country }}
+            </td>
+            <td>
+                <strong>PAIEMENT</strong><br>
+                Le {{ order.createAt|date('d/m/Y') }}<br>
+                {{ order.total }} €
+            </td>
+        </tr>
+    </table>
+</div>
+
+<table>
+    <thead class="bg-light">
+    <tr>
+        <th>Article</th>
+        <th>Quantité</th>
+        <th>Prix unitaire</th>
+        <th>Montant</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>Clavier mécanique</td>
-        <td align="right">59.99 €</td>
-        <td align="right">1</td>
-        <td align="right">59.99 €</td>
-    </tr>
-    <tr>
-        <td>Souris gaming</td>
-        <td align="right">39.90 €</td>
-        <td align="right">2</td>
-        <td align="right">79.80 €</td>
-    </tr>
-    <tr>
-        <td>Tapis de souris XXL</td>
-        <td align="right">19.95 €</td>
-        <td align="right">1</td>
-        <td align="right">19.95 €</td>
-    </tr>
+    {% for item in order.orderItems %}
+        <tr>
+            <td>{{ item.product.name }} #{{ item.product.id }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.product.price|number_format(2, '.', '') }} €</td>
+            <td>{{ (item.product.price * item.quantity)|number_format(2, '.', '') }} €</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4">Aucun produit.</td></tr>
+    {% endfor %}
     </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="3" align="right"><strong>Total</strong></td>
-        <td align="right"><strong>159.74 €</strong></td>
-    </tr>
-    </tfoot>
 </table>
 
-<hr>
-
-<p><strong>Statut :</strong> Commandé</p>
-<p><em>Merci pour votre achat !</em></p>
+<table class="totals">
+    <tr>
+        <td colspan="3" class="label bold">Sous-total :</td>
+        <td>{{ order.total|number_format(2, '.', '') }} €</td>
+    </tr>
+    <tr>
+        <td colspan="3" class="label bold">TVA :</td>
+        <td>Inclus</td>
+    </tr>
+    <tr>
+        <td colspan="3" class="label bold">Total dû :</td>
+        <td class="bold">{{ order.total|number_format(2, '.', '') }} €</td>
+    </tr>
+</table>
+</body>
+</html>

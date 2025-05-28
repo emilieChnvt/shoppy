@@ -10,6 +10,7 @@ use App\Repository\AddressRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\OrderRepository;
 use App\Service\CartService;
+use App\Service\InvoiceMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,7 +94,7 @@ final class OrderController extends AbstractController
 
     #[Route('/order/validate/{idBilling}/{idShipping}', name: 'app_order_validate')]
 
-    public function validate( EntityManagerInterface $manager,  AddressRepository $addressRepository, $idBilling, $idShipping, CartService $cartService):Response
+    public function validate(InvoiceMailer $invoiceMailer, EntityManagerInterface $manager,  AddressRepository $addressRepository, $idBilling, $idShipping, CartService $cartService):Response
     {
         $billing = $addressRepository->find($idBilling);
         $shipping = $addressRepository->find($idShipping);
@@ -121,9 +122,18 @@ final class OrderController extends AbstractController
             $product->setStock($newtStock);
             $manager->persist($product);
         }
-        dump('validate called', $order);
         $manager->flush();
         $cartService->emptyCart();
+
+        try {
+            $invoiceMailer->send($order);
+            // ✅ L'email a été envoyé (accepté par le transport SMTP)
+        } catch (\Exception $e) {
+                dd("Erreur lors de l'envoi de l'email : " . $e->getMessage());
+
+            // Tu peux logger l'erreur ou afficher un message
+        }
+
         return $this->render('order/success.html.twig',[
             'order' => $order,
             'billing' => $billing,
