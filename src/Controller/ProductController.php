@@ -23,12 +23,15 @@ final class ProductController extends AbstractController
 {
 
     #[Route('/product/{id}', name: 'app_product_show')]
-    public function show(Product $product, CategoryRepository $categoryRepository): Response
+    public function show(Product $product, CategoryRepository $categoryRepository, Request $request): Response
     {
+        $form = $this->createForm(ProductSearchForm::class );
+        $form->handleRequest($request);
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'categories' => $categoryRepository->findAll(),
+            'form' => $form->createView(),
 
         ]);
     }

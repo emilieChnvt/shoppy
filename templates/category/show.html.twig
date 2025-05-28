@@ -1,24 +1,28 @@
+{% block javascript %}
+{% block importmap %}
+    {{ importmap('filtre') }}
+{% endblock %}
+{% endblock %}
 
-<div class="flex flex-column">
+<div class="flex flex-col">
     <div>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <button class="" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="">filtre</span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        {% for category in categories %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_category_show', {id: category.id}) }}" class="text-black">
-                                {{ category.name }}
-                            </a>
-                        </li>
-                        {% endfor %}
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <button id="filtre" type="button" class="px-4 py-2 bg-[#D66853] text-white rounded hover:bg-[#bf503f] focus:outline-none focus:ring-2 focus:ring-[#D66853]">
+            filtre
+            <!-- Tu peux ajouter ici des icônes SVG si tu veux -->
+        </button>
+        <div id="mobile-menu-filtre" class="hidden mt-3">
+            <ul class="flex flex-col space-y-2">
+                {% for category in categories %}
+                    <li>
+                        <a href="{{ path('app_category_show', {id: category.id}) }}"
+                           class="block px-4 py-2 rounded text-[#D66853] hover:bg-[#D66853] hover:text-white transition-colors duration-200">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
+
+

@@ -24,6 +24,10 @@ return [
         'path' => './assets/nav.js',
         'entrypoint' => true,
     ],
+    'filtre' => [
+        'path' => './assets/filtre.js',
+        'entrypoint' => true,
+    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
