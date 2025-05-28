@@ -26,7 +26,7 @@ class Order
     private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Profile $customer = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]

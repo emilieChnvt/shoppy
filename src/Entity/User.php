@@ -37,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
-    #[ORM\OneToOne(mappedBy: 'ofUser', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'ofUser', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?Profile $profile = null;
 
     public function getId(): ?int
