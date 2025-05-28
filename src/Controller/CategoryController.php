@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryForm;
+use App\Form\ProductSearchForm;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,12 +25,16 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/category/show/{id}', name: 'app_category_show')]
-    public function showCategory(Category $category, CategoryRepository $categoryRepository): Response
+    public function showCategory(Category $category, CategoryRepository $categoryRepository, Request $request): Response
     {
+        $form = $this->createForm(ProductSearchForm::class);
+        $form->handleRequest($request);
+
         return $this->render('product/index.html.twig', [
             'category' => $category,
             'products' => $category->getProduct(),
             'categories'=> $categoryRepository->findAll(),
+            'form' => $form->createView(),
         ]);
     }
 

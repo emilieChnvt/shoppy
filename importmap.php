@@ -20,6 +20,10 @@ return [
         'path' => './assets/quantity.js',
         'entrypoint' => true,
     ],
+    'nav' => [
+        'path' => './assets/nav.js',
+        'entrypoint' => true,
+    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
@@ -32,9 +36,6 @@ return [
     '@hotwired/turbo' => [
         'version' => '8.0.13',
     ],
-    'tailwind' => [
-        'version' => '4.0.0',
-    ],
     'tailwindcss' => [
         'version' => '4.1.7',
     ],
@@ -42,15 +43,8 @@ return [
         'version' => '4.1.7',
         'type' => 'css',
     ],
-    'bootstrap' => [
-        'version' => '5.3.6',
-    ],
     '@popperjs/core' => [
         'version' => '2.11.8',
-    ],
-    'bootstrap/dist/css/bootstrap.min.css' => [
-        'version' => '5.3.6',
-        'type' => 'css',
     ],
     'chart.js' => [
         'version' => '4.4.9',
@@ -58,25 +52,18 @@ return [
     'tom-select' => [
         'version' => '2.4.3',
     ],
+    'tom-select/dist/css/tom-select.default.min.css' => [
+        'version' => '2.4.3',
+        'type' => 'css',
+    ],
     '@orchidjs/sifter' => [
         'version' => '1.1.0',
     ],
     '@orchidjs/unicode-variants' => [
         'version' => '1.1.2',
     ],
-    'tom-select/dist/css/tom-select.default.min.css' => [
-        'version' => '2.4.3',
-        'type' => 'css',
-    ],
     '@kurkle/color' => [
         'version' => '0.3.4',
-    ],
-    'tom-select/dist/css/tom-select.default.css' => [
-        'version' => '2.4.3',
-        'type' => 'css',
-    ],
-    'tom-select/dist/css/tom-s' => [
-        'version' => '2.4.3',
     ],
     'flowbite-datepicker' => [
         'version' => '1.3.2',
@@ -87,5 +74,9 @@ return [
     ],
     '@symfony/ux-turbo' => [
         'version' => '2.25.2',
+    ],
+    'tom-select/dist/css/tom-select.default.css' => [
+        'version' => '2.4.3',
+        'type' => 'css',
     ],
 ];

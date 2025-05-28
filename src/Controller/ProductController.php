@@ -34,7 +34,7 @@ final class ProductController extends AbstractController
     }
 
     #[Route('/products/search', name: 'search_product')]
-    public function search(Request $request, ): Response
+    public function search(Request $request ): Response
     {
         $form = $this->createForm(ProductSearchForm::class );
         $form->handleRequest($request);
@@ -48,7 +48,7 @@ final class ProductController extends AbstractController
             return $this->redirectToRoute('app_product_show', ['id'=>$product->getId()]);
         }
         return $this->render('search/search.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
