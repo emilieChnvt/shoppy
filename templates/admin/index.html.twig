@@ -3,55 +3,61 @@
 {% block title %}Gestion des utilisateurs{% endblock %}
 
 {% block body %}
-    <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 ">
-        <div class="w-full max-w-6xl bg-white rounded-2xl p-8 shadow-lg border border-[#D66853]">
-            <h1 class="text-3xl font-bold text-center text-[#D66853] mb-8">Gestion des utilisateurs</h1>
+    <div class="flex min-h-screen">
+        {% include 'navbar/navAdminEmploye.html.twig' %}
 
-            <table class="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg">
-                <thead class="bg-[#D66853]">
-                <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Id</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Email</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Rôles</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Actions</th>
-                </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                {% for user in users %}
+        <main class="flex-1 px-6 py-8 overflow-auto ">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-[#D66853]">Gestion des utilisateurs</h1>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg shadow border border-[#D66853] bg-white p-8">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-[#D66853]">
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ user.email }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ user.roles|join(', ') }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                            {% if 'ROLE_ADMIN' not in user.roles %}
-                                <a href="{{ path('app_makeAdmin', {id: user.id}) }}"
-                                   class="inline-block px-3 py-1 rounded bg-[#D66853] text-white hover:bg-[#bf503f] transition">
-                                    Make Admin
-                                </a>
-                            {% endif %}
-
-                            {% if 'ROLE_EMPLOYEE' not in user.roles %}
-                                <a href="{{ path('app_makeEmployee', {id: user.id}) }}"
-                                   class="inline-block px-3 py-1 rounded bg-[#6B4C3B] text-white hover:bg-[#5a3d31] transition">
-                                    Make Employee
-                                </a>
-                            {% endif %}
-
-                            {% if 'ROLE_ADMIN' in user.roles or 'ROLE_EMPLOYEE' in user.roles %}
-                                <a href="{{ path('app_demote', {id: user.id}) }}"
-                                   class="inline-block px-3 py-1 rounded border border-[#D66853] text-[#D66853] hover:bg-[#D66853] hover:text-white transition">
-                                    Demote
-                                </a>
-                            {% endif %}
-                        </td>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Id</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Email</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Rôles</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Actions</th>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">Aucun utilisateur trouvé.</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    {% for user in users %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ user.email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ user.roles|join(', ') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                                {% if 'ROLE_ADMIN' not in user.roles %}
+                                    <a href="{{ path('app_makeAdmin', {id: user.id}) }}"
+                                       class="inline-block px-3 py-1 rounded bg-[#D66853] text-white hover:bg-[#bf503f] transition">
+                                        Make Admin
+                                    </a>
+                                {% endif %}
+
+                                {% if 'ROLE_EMPLOYEE' not in user.roles %}
+                                    <a href="{{ path('app_makeEmployee', {id: user.id}) }}"
+                                       class="inline-block px-3 py-1 rounded bg-[#6B4C3B] text-white hover:bg-[#5a3d31] transition">
+                                        Make Employee
+                                    </a>
+                                {% endif %}
+
+                                {% if 'ROLE_ADMIN' in user.roles or 'ROLE_EMPLOYEE' in user.roles %}
+                                    <a href="{{ path('app_demote', {id: user.id}) }}"
+                                       class="inline-block px-3 py-1 rounded border border-[#D66853] text-[#D66853] hover:bg-[#D66853] hover:text-white transition">
+                                        Demote
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">Aucun utilisateur trouvé.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
 {% endblock %}
