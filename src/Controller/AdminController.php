@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Images;
 use App\Entity\Product;
+use App\Entity\User;
 use App\Form\ImagesForm;
 use App\Form\ProductForm;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,8 +19,53 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin')]
 final class AdminController extends AbstractController
 {
+    #[Route('/', name: 'app_admin')]
+    public function index(UserRepository $userRepository): Response
+    {
+        return $this->render('admin/index.html.twig', [
+            'users'=> $userRepository->findAll(),
+        ]);
+    }
+    private function addRole(User $user, string $role, EntityManagerInterface $manager): void
+    {
+        $roles = $user->getRoles();
+
+        if (!in_array($role, $roles, true)) {
+            $roles[] = $role;
+            $user->setRoles($roles);
+            $manager->persist($user);
+            $manager->flush();
+        }
+    }
+
+    #[Route('/makeAdmin/{id}', name: 'app_makeAdmin')]
+    public function makeAdmin(User $user, EntityManagerInterface $manager): Response
+    {
+        $this->addRole($user, 'ROLE_ADMIN', $manager);
+        return $this->redirectToRoute('app_admin');
+    }
+
+    #[Route('/makeEmployee/{id}', name: 'app_makeEmployee')]
+    public function makeEmployee(User $user, EntityManagerInterface $manager): Response
+    {
+        $this->addRole($user, 'ROLE_EMPLOYEE', $manager);
+        return $this->redirectToRoute('app_admin');
+    }
+
+    #[Route('/demote/{id}', name: 'app_demote')]
+    public function demote(User $user, EntityManagerInterface $manager): Response
+    {
+        $user->setRoles(['ROLE_USER']); // Reset à rôle utilisateur de base
+        $manager->persist($user);
+        $manager->flush();
+        return $this->redirectToRoute('app_admin');
+    }
+
+
+
+
     #[Route('/products', name: 'app_admin_products')]
-    public function index(ProductRepository $productRepository): Response
+    public function showAll(ProductRepository $productRepository): Response
     {
         if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {return $this->redirectToRoute('app_login');}
 
@@ -28,7 +75,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{id}', name: 'app_admin_product')]
+    #[Route('/product/show/{id}', name: 'app_admin_product')]
     public function show(Product $product): Response
     {
         return $this->render('admin/show.html.twig', [
@@ -36,7 +83,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/products/{id}/add-images', name: 'app_product_addImages_product')]
+    #[Route('/products/addImages/{id}', name: 'app_product_addImages_product')]
     public function addImages(Request $request, EntityManagerInterface $entityManager, Product $product): Response
     {
         if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
@@ -58,7 +105,7 @@ final class AdminController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
+            return $this->redirectToRoute('app_admin_product', ['id' => $product->getId()]);
         }
 
         return $this->render('admin/add_image.html.twig', [

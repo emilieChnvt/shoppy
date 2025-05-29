@@ -16,6 +16,24 @@ class ProfileRepository extends ServiceEntityRepository
         parent::__construct($registry, Profile::class);
     }
 
+    public function findOneByRole(string $role): ?Profile
+    {
+        $profiles = $this->createQueryBuilder('p')
+            ->join('p.ofUser', 'u')
+            ->addSelect('u')
+            ->getQuery()
+            ->getResult();
+
+        foreach ($profiles as $profile) {
+            if (in_array($role, $profile->getOfUser()->getRoles())) {
+                return $profile;
+            }
+        }
+
+        return null;
+    }
+
+
     //    /**
     //     * @return Profile[] Returns an array of Profile objects
     //     */

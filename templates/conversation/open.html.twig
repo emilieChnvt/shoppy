@@ -1,27 +1,67 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <a href="{{ path('app_conversation') }}"><--back to conversations</a>
-    <h3>Messages : </h3>
-    <div id="messages" {{ turbo_stream_listen('conversations/' ~ conversation.id, 'default', { withCredentials: true }) }}>
+    <div class="min-h-screen  flex flex-col items-center py-12 px-4">
 
-        {% for message in conversation.messages %}
+        <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 flex flex-col">
 
-            <twig:Message :message="message"></twig:Message>
+            <a href="{{ path('app_products') }}" class="self-start text-gray-500 hover:text-[#D66853] mb-6 font-semibold transition">
+                &larr; Retourner à la boutique
+            </a>
 
-        {% endfor %}
+            <h3 class="text-3xl font-bold mb-8 text-gray-800">Messages</h3>
 
+            <div id="messages"
+                 class="flex flex-col gap-6 max-h-[520px] overflow-y-auto border border-gray-200 rounded-lg p-6 bg-white shadow-inner"
+                    {{ turbo_stream_listen('conversations/' ~ conversation.id, 'default', { withCredentials: true }) }}>
+
+                {% for message in conversation.messages %}
+                    <div class="flex {% if message.author.id == app.user.id %}justify-end{% else %}justify-start{% endif %}">
+                        <div class="max-w-[75%]">
+                            <div class="flex items-end gap-4 {% if message.author.id == app.user.id %}flex-row-reverse{% endif %}">
+                                <div>
+                                    <div class="text-xs text-gray-400 mb-1 {% if message.author.id == app.user.id %}text-right{% endif %}">
+                                        {% if 'ROLE_EMPLOYEE' in message.author.ofUser.roles %}
+                                            Support
+                                        {% else %}
+                                            {{ message.author.name }}
+                                        {% endif %}
+                                        · {{ message.createAt|date('H:i') }}
+                                    </div>
+
+                                    <div class="px-5 py-4 rounded-lg
+                                    {% if message.author.id == app.user.id %}
+                                        bg-[#D66853] text-white rounded-br-none
+                                    {% else %}
+                                        bg-gray-100 text-gray-900 rounded-bl-none
+                                    {% endif %}
+                                    shadow-md whitespace-pre-wrap break-words leading-relaxed font-sans text-base">
+                                        {{ message.content|nl2br }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-gray-400 italic text-center mt-20">No messages yet...</p>
+                {% endfor %}
+            </div>
+
+            <turbo-frame id="message_form" class="mt-8">
+                {{ form_start(form, { attr: { class: 'flex gap-4 items-center' } }) }}
+                {{ form_widget(form.content, { attr: {
+                    class: 'flex-grow border border-gray-300 rounded-lg px-5 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D66853] transition',
+                    placeholder: 'Write your message here...'
+                } }) }}
+                <button type="submit"
+                        class="bg-[#D66853] text-white font-semibold px-7 py-3 rounded-lg hover:bg-[#bf503f] transition duration-200 shadow-lg">
+                    Send
+                </button>
+                {{ form_end(form) }}
+            </turbo-frame>
+
+        </div>
     </div>
-    <turbo-frame id="message_form">
-        {{ form_start(form) }}
-        {{ form_widget(form.content) }}
-        <button type="submit">post</button>
-        {{ form_end(form) }}
-
-    </turbo-frame>
-
 {% endblock %}
 
-{% block title %}
-
-{% endblock %}
+{% block title %}Conversation{% endblock %}

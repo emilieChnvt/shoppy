@@ -45,13 +45,13 @@ class Product
     /**
      * @var Collection<int, Feedback>
      */
-    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'product',cascade: ["remove"])]
     private Collection $feedback;
 
     /**
      * @var Collection<int, OrderItem>
      */
-    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'product',cascade: ["remove"])]
     private Collection $orderItems;
 
     public function __construct()

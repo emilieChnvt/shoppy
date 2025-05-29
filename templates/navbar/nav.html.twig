@@ -3,9 +3,11 @@
     {{ importmap('nav') }}
 {% endblock %}
 {% endblock %}
+
 {% set searchFormHtml %}
     {% include 'search/search.html.twig' with { form: form } %}
 {% endset %}
+
 <nav class="py-5 border-b border-gray-200">
     <div class="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 xl:px-16">
 
@@ -31,11 +33,32 @@
                 </button>
             </div>
 
-            <!-- Panier Desktop -->
-            <div class="hidden sm:flex sm:items-center">
-                <a href="{{ path('app_cart') }}" class="flex items-center text-[#D66853] hover:text-[#bf503f] transition-colors duration-200">
-                    {{ ux_icon('mdi:shopping-outline', {class: 'w-6 h-6'}) }}
-                </a>
+            <!-- Panier Desktop et autres liens -->
+            <div class="hidden sm:flex sm:items-center gap-x-[20px]">
+                {% if app.user and 'ROLE_ADMIN' not in app.user.roles %}
+                    <a href="{{ path('app_cart') }}" class="flex items-center text-[#D66853] hover:text-[#bf503f] transition-colors duration-200">
+                        {{ ux_icon('mdi:shopping-outline', {class: 'w-6 h-6'}) }}
+                    </a>
+                {% endif %}
+
+                {% if app.user %}
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                        <a href="{{ path('app_admin_products') }}" class="flex items-center text-[#D66853] hover:text-[#bf503f] transition-colors duration-200">
+                            {{ ux_icon('mdi:view-dashboard-outline', {class: 'w-6 h-6'}) }}
+                            <span class="ml-1 font-semibold">Admin Panel</span>
+                        </a>
+                    {% endif %}
+
+                    {% if 'ROLE_EMPLOYEE' in app.user.roles %}
+                        <a href="{{ path('app_conversations_sav') }}" class="flex items-center text-[#D66853] hover:text-[#bf503f] transition-colors duration-200">
+                            {{ ux_icon('material-symbols:chat', {class: 'w-6 h-6'}) }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_conversation_contactSAV', {id: app.user.profile.id}) }}" class="flex items-center text-[#D66853] hover:text-[#bf503f] transition-colors duration-200">
+                            {{ ux_icon('mynaui:question-solid', {class: 'w-6 h-6'}) }}
+                        </a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
 
@@ -64,10 +87,35 @@
                         {{ category.name }}
                     </a>
                 {% endfor %}
-                <a href="{{ path('app_cart') }}"
-                   class="block px-3 py-2 rounded-md text-[#D66853] hover:bg-[#D66853] hover:text-white">
-                    Mon Panier
-                </a>
+
+                {% if app.user and 'ROLE_ADMIN' not in app.user.roles %}
+                    <a href="{{ path('app_cart') }}"
+                       class="block px-3 py-2 rounded-md text-[#D66853] hover:bg-[#D66853] hover:text-white">
+                        Mon Panier
+                    </a>
+                {% endif %}
+
+                {% if app.user %}
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                        <a href="{{ path('app_admin_products') }}"
+                           class="block px-3 py-2 rounded-md text-[#D66853] hover:bg-[#D66853] hover:text-white">
+                            Admin Panel
+                        </a>
+                    {% endif %}
+
+                    {% if 'ROLE_EMPLOYEE' in app.user.roles %}
+                        <a href="{{ path('app_conversations_sav') }}"
+                           class="block px-3 py-2 rounded-md text-[#D66853] hover:bg-[#D66853] hover:text-white">
+                            Mes conversations
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_conversation_contactSAV', {id: app.user.profile.id}) }}"
+                           class="block px-3 py-2 rounded-md text-[#D66853] hover:bg-[#D66853] hover:text-white">
+                            Besoin d'aide
+                        </a>
+                    {% endif %}
+                {% endif %}
+
                 <div class="px-3 pt-2">
                     {{ searchFormHtml|raw }}
                 </div>

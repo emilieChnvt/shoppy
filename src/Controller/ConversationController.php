@@ -30,17 +30,40 @@ final class ConversationController extends AbstractController
             'profiles' => $profileRepository->findAll(),
         ]);
     }
-    #[Route('/conversation/openwith/{id}', name: 'app_conversation_openwith')]
-    public function openwith(Profile $profile, ConversationRepository $conversationRepository, EntityManagerInterface $manager): Response
+    #[Route('/conversations/sav', name: 'app_conversations_sav')]
+    public function savInterface(ProfileRepository $profileRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $profile = $user->getProfile();
+
+        if (!in_array('ROLE_EMPLOYEE', $user->getRoles())) {
+            return $this->redirectToRoute('app_employee');
+        }
+
+        $conversations = $profile->getConversations();
+
+        return $this->render('conversation/sav_interface.html.twig', [
+            'conversations' => $conversations,
+        ]);
+    }
+
+    #[Route('/conversation/contactSAV/{id}', name: 'app_conversation_contactSAV')]
+    public function contactSAV(ProfileRepository $profileRepository, Profile $profile, ConversationRepository $conversationRepository, EntityManagerInterface $manager): Response
     {
         if(!$this->getUser()){return $this->redirectToRoute('app_login');}
-        if(!$profile){return $this->redirectToRoute('app_conversations');}
 
-        $conversation = $conversationRepository->findOneByCouple($profile, $this->getUser());
+        $employee = $profileRepository->findOneByRole('ROLE_EMPLOYEE');
+        if(!$employee){return $this->redirectToRoute('app_products');}
+
+        $conversation = $conversationRepository->findOneByCouple($profile, $employee);
 
         if(!$conversation){
             $conversation = new Conversation();
-            $conversation->addParticipant($this->getUser()->getProfile());
+            $conversation->addParticipant($employee);
             $conversation->addParticipant($profile);
             $manager->persist($conversation);
             $manager->flush();

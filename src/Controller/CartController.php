@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\ProductSearchForm;
 use App\Repository\CategoryRepository;
 use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,12 +14,15 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CartController extends AbstractController
 {
     #[Route('/cart', name: 'app_cart')]
-    public function index(CartService $cartService, CategoryRepository $categoryRepository): Response
+    public function index(CartService $cartService, CategoryRepository $categoryRepository, Request $request): Response
     {
+        $form = $this->createForm(ProductSearchForm::class );
+        $form->handleRequest($request);
         return $this->render('cart/index.html.twig', [
             'cart'=>$cartService->getCart(),
             'total'=>$cartService->getTotalPrice(),
            'categories'=>$categoryRepository->findAll(),
+           'form'=>$form->createView(),
            // 'count'=>$cartService->getCount(),
 
         ]);

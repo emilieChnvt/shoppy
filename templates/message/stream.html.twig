@@ -4,7 +4,17 @@
 
         <template>
 
-            <p id="{{ 'message_' ~ message.id }}" ><strong>{{ message.author.name }} said: </strong>{{ message.content }}</p>
+            <p id="{{ 'message_' ~ message.id }}" ><strong>
+
+                    {% if 'ROLE_EMPLOYEE' in message.author.ofUser.roles %}
+                        Support
+                    {% else %}
+                        {{ message.author.name }}
+                    {% endif %}
+
+                    said: </strong>{{ message.content }}</p>
+
+
 
 
         </template>

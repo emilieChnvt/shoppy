@@ -29,30 +29,29 @@
 
         <div>
             {{ form_label(form.streetNumber, 'Numéro de rue', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
-            {{ form_widget(form.streetNumber, {'attr': {'class': 'block w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
+            {{ form_widget(form.streetNumber, {'attr': {'class': ' required block w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
             {{ form_errors(form.streetNumber) }}
         </div>
 
         <div>
             {{ form_label(form.street, 'Rue', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
-            {{ form_widget(form.street, {'attr': {'class': 'block w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
+            {{ form_widget(form.street, {'attr': {'class': ' required block w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
             {{ form_errors(form.street) }}
         </div>
 
         <div>
             {{ form_label(form.zipcode, 'Code postal', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
-            {{ form_widget(form.zipcode, {'attr': {'class': 'block w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
+            {{ form_widget(form.zipcode, {'attr': {'class': ' requiredblock w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
             {{ form_errors(form.zipcode) }}
         </div>
-
         <div>
-            {{ form_label(form.country, 'Pays', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
-            {{ form_widget(form.country, {'attr': {'class': 'block w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
+            {{ form_label(form.country, 'Pays', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1 '}}) }}
+            {{ form_widget(form.country, {'attr': {'class': 'required block w-full rounded-md border border-gray-300 shadow-sm focus:ring-[#D66853] focus:border-[#D66853] text-sm p-2'}}) }}
             {{ form_errors(form.country) }}
         </div>
 
         <div>
-            <button type="submit"
+            <button type="submit" disabled
                     class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#D66853] hover:bg-[#bf503f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D66853]">
                 Suivant
             </button>

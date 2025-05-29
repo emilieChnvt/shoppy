@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Interface SAV{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen flex">
+
+        {% include 'navbar/navAdminEmploye.html.twig' %}
+
+        <main class="flex-1 px-10 py-12 overflow-y-auto">
+            <h2 class="text-3xl font-bold mb-8 text-gray-800">Interface Service Client (SAV)</h2>
+
+            <h3 class="text-xl font-semibold mb-6 text-[#D66853]">Vos conversations avec les clients :</h3>
+
+            {% if conversations is empty %}
+                <p class="text-gray-500 italic">Aucune conversation en cours.</p>
+            {% else %}
+                <ul class="space-y-4">
+                    {% for conversation in conversations %}
+                        <li>
+                            <a href="{{ path('app_conversation_open', {id: conversation.id}) }}"
+                               class="block p-4 rounded-lg border border-[#D66853] hover:bg-[#D66853] hover:text-white transition font-medium">
+                                <span class="mr-2 font-bold">Conversation #{{ conversation.id }}</span> - Clients :
+                                {% for participant in conversation.participants %}
+                                    {% if 'ROLE_EMPLOYEE' not in participant.ofUser.roles %}
+                                        <span class="ml-1">{{ participant.name }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </main>
+    </div>
+{% endblock %}
