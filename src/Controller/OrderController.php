@@ -31,7 +31,6 @@ final class OrderController extends AbstractController
             $entityManager->persist($address);
             $entityManager->flush();
 
-            // Redirige vers shipping address avec id billing
             return $this->redirectToRoute('app_order_shippingaddress', [
                 'id' => $address->getId()
             ]);
@@ -127,11 +126,10 @@ final class OrderController extends AbstractController
 
         try {
             $invoiceMailer->send($order);
-            // ✅ L'email a été envoyé (accepté par le transport SMTP)
         } catch (\Exception $e) {
                 dd("Erreur lors de l'envoi de l'email : " . $e->getMessage());
 
-            // Tu peux logger l'erreur ou afficher un message
+            // l'envoi de mail fonctionne pas en ligne
         }
 
         return $this->render('order/success.html.twig',[

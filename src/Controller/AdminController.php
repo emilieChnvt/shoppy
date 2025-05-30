@@ -30,13 +30,13 @@ final class AdminController extends AbstractController
     {
         $roles = $user->getRoles();
 
-        if (!in_array($role, $roles, true)) {
+        if (!in_array($role, $roles, true )) {  //true = comparaison structe
             $roles[] = $role;
             $user->setRoles($roles);
             $manager->persist($user);
             $manager->flush();
         }
-    }
+    } // ajoute que si le user n' pas déjà ce rôle
 
     #[Route('/makeAdmin/{id}', name: 'app_makeAdmin')]
     public function makeAdmin(User $user, EntityManagerInterface $manager): Response
@@ -55,7 +55,7 @@ final class AdminController extends AbstractController
     #[Route('/demote/{id}', name: 'app_demote')]
     public function demote(User $user, EntityManagerInterface $manager): Response
     {
-        $user->setRoles(['ROLE_USER']); // Reset à rôle utilisateur de base
+        $user->setRoles(['ROLE_USER']); // Reset à ROLE_USER
         $manager->persist($user);
         $manager->flush();
         return $this->redirectToRoute('app_admin');

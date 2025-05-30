@@ -4,30 +4,30 @@
 
 {% block body %}
     <div class="min-h-screen flex items-center justify-center px-8 py-20 ">
-        <div class="rounded-3xl border border-[#D66853]/40 bg-white shadow-md max-w-xl w-full p-10 flex flex-col items-center gap-8">
+        <div class="rounded-3xl border border-[#D66853] bg-white shadow-md max-w-xl w-full p-10 flex flex-col items-center gap-8">
 
-            <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#D66853]/20 text-[#D66853] text-5xl font-extrabold select-none mb-6">
+            <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#D66853] text-[#D66853] text-5xl font-extrabold  mb-6">
                 ✓
             </div>
 
-            <h1 class="text-3xl font-semibold text-[#D66853] tracking-wide text-center">
+            <h1 class="text-3xl font-semibold text-[#D66853]  text-center">
                 Paiement confirmé !
             </h1>
 
-            <p class="text-[#7A3E2D] text-center text-base leading-relaxed max-w-md">
+            <p class="text-[#7A3E2D] text-center text-base max-w-md">
                 Merci pour votre achat.<br>
                 Voici le récapitulatif de votre commande :
             </p>
 
-            <div class="bg-[#FFF7F4] rounded-lg shadow-sm p-6 border border-[#D66853]/30 text-center max-w-md">
+            <div class="bg-[#FFF7F4] rounded-lg shadow-sm p-6 border border-[#D66853] text-center max-w-md">
                 <p class="text-[#D66853] font-semibold text-lg mb-3">Votre commande a bien été prise en compte.</p>
-                <p class="text-[#7A3E2D] leading-relaxed">
+                <p class="text-[#7A3E2D] ">
                     Nous vous remercions de votre confiance et vous souhaitons une excellente expérience avec nos produits.
                 </p>
             </div>
 
             <a href="{{ path('app_my_orders') }}"
-               class="inline-block px-12 py-3 bg-[#D66853] text-white rounded-full shadow-md hover:bg-[#bf503f] transition duration-300 font-semibold text-base tracking-wide">
+               class="inline-block px-12 py-3 bg-[#D66853] text-white rounded-full shadow-md hover:bg-[#bf503f] transition duration-300 font-semibold text-base ">
                 Voir mes commandes
             </a>
 

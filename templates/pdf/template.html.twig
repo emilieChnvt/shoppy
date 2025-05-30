@@ -60,7 +60,7 @@
             <td>{{ item.product.name }} #{{ item.product.id }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.product.price|number_format(2, '.', '') }} €</td>
-            <td>{{ (item.product.price * item.quantity)|number_format(2, '.', '') }} €</td>
+            <td>{{ (item.product.price * item.quantity)|number_format(2, '.', '') }} €</td> <!-- 2 chiffres apres virgule-->
         </tr>
     {% else %}
         <tr><td colspan="4">Aucun produit.</td></tr>

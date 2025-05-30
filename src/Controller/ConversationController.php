@@ -85,7 +85,7 @@ final class ConversationController extends AbstractController
     ): Response
     {
         if(!$this->getUser()){return $this->redirectToRoute('app_login');}
-        if(!$conversation){return $this->redirectToRoute('conversations');}
+        if(!$conversation){return $this->redirectToRoute('app_products');}
 
         $message = new Message();
         $form = $this->createForm(MessageForm::class, $message);
