@@ -41,17 +41,17 @@ return [
         'version' => '8.0.13',
     ],
     'tailwindcss' => [
-        'version' => '4.1.7',
+        'version' => '4.1.10',
     ],
     'tailwindcss/index.min.css' => [
-        'version' => '4.1.7',
+        'version' => '4.1.10',
         'type' => 'css',
     ],
     '@popperjs/core' => [
         'version' => '2.11.8',
     ],
     'chart.js' => [
-        'version' => '4.4.9',
+        'version' => '4.5.0',
     ],
     'tom-select' => [
         'version' => '2.4.3',
@@ -67,7 +67,7 @@ return [
         'version' => '1.1.2',
     ],
     '@kurkle/color' => [
-        'version' => '0.3.4',
+        'version' => '0.4.0',
     ],
     'flowbite-datepicker' => [
         'version' => '1.3.2',
@@ -77,7 +77,7 @@ return [
         'type' => 'css',
     ],
     '@symfony/ux-turbo' => [
-        'version' => '2.25.2',
+        'version' => '2.26.1',
     ],
     'tom-select/dist/css/tom-select.default.css' => [
         'version' => '2.4.3',

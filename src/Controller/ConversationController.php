@@ -21,15 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ConversationController extends AbstractController
 {
-    #[Route('/', name: 'app_conversation')]
-    public function index(ProfileRepository $profileRepository): Response
-    {
-        if(!$this->getUser()){return $this->redirectToRoute('app_login');}
 
-        return $this->render('conversation/index.html.twig', [
-            'profiles' => $profileRepository->findAll(),
-        ]);
-    }
     #[Route('/conversations/sav', name: 'app_conversations_sav')]
     public function savInterface(ProfileRepository $profileRepository): Response
     {
